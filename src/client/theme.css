@@ -1,0 +1,10 @@
+.guiPanel {
+	background-color: white;
+
+}
+.flex {
+	display: flex;
+}
+.column {
+	flex-direction: column;
+}
