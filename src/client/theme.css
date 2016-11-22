@@ -8,3 +8,11 @@
 .column {
 	flex-direction: column;
 }
+
+.flexJustifyCenter {
+	justify-content: center;
+}
+
+.centerContent {
+	align-items: center;
+}

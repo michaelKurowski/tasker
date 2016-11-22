@@ -14,12 +14,20 @@ window.onload = function () {
 function declareInputField(htmlElement) {
 	htmlElement.style.color = 'silver'
 	var hasBeenActivated = false
-	htmlElement.onclick = function () {
+	var originalValue = htmlElement.value
+	htmlElement.onfocus = function () {
 		if (!hasBeenActivated){
 			htmlElement.value = ''
 			htmlElement.style.color = 'black'
 		}
 		hasBeenActivated = true
+	}
+	htmlElement.onblur = function () {
+		if (!htmlElement.value) {
+			htmlElement.style.color = 'silver'
+			htmlElement.value = originalValue
+			hasBeenActivated = false
+		}
 	}
 }
 
