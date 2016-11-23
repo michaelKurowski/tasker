@@ -2,6 +2,7 @@ body {
 	background-image: url('assets/background.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	overflow: hidden;
 }
 
 input {
@@ -15,6 +16,8 @@ button {
 .guiPanel {
 	background-color: white;
 	padding: 20px;
+    animation-duration: 1s;
+
 }
 .flex {
 	display: flex;
@@ -29,4 +32,17 @@ button {
 
 .centerContent {
 	align-items: center;
+}
+
+.switchable {
+
+}
+
+@keyframes switchOut {
+	0% {transform: translate(0%, 0px);}
+	100% {transform: translate(100vw, 0px);}
+}
+@keyframes switchIn {
+	0% {transform: translate(-100vw, 0px);}
+	100% {transform: translate(0vw, 0px);}
 }

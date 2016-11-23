@@ -38,3 +38,8 @@ function toArray(hostObj){ //converts host object to array
 	}
 	return newArray
 }
+
+function moveToScreen(actualScreen, nextScreen) {
+	actualScreen.style.animationName = "switchOut"
+	nextScreen.style.animationName = "switchIn"
+}
