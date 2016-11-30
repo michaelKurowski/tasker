@@ -8,7 +8,6 @@ function login() {
 	moveToScreen(screens.login, screens.tasker)
 }
 
-
 function createTask() {
 
 }

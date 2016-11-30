@@ -31,6 +31,12 @@ function declareInputField(htmlElement) {
 	}
 }
 
+function declareDropDownMenu(htmlElement, unrollElement) {
+	htmlElement.onmouseover = function () {
+		//htmlElement
+	}
+}
+
 function toArray(hostObj){ //converts host object to array
 	var newArray = []
 	for (var i = 0 ; i < hostObj.length ; i++) {

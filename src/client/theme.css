@@ -61,16 +61,16 @@ button {
 	justify-content: center;
 }
 
-.redAlerts > div{
+.redAlerts > div > .alert {
 	background-color: red;
 }
-.orangeAlerts > div{
+.orangeAlerts > div > .alert {
 	background-color: orange;
 }
-.yellowAlerts > div{
+.yellowAlerts > div > .alert {
 	background-color: yellow;
 }
-.greenAlerts > div{
+.greenAlerts > div > .alert {
 	background-color: green;
 }
 
@@ -80,6 +80,13 @@ button {
 
 .alertButtons {
 	float: right;
+}
+
+.historyRecord {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: silver;
+	margin-top: 5px;
 }
 
 @keyframes switchOut {
