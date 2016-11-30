@@ -5,8 +5,8 @@
 	<script src="libs/api.js"></script>
 </head>
 <body class="flex column flexJustifyCenter centerContent">
-
-	<div class="guiPanel" style="width: 20%;">
+	<!--
+	<div id="loginPanel" class="guiPanel" style="width: 20%;">
 		<h1>Login page</h1>
 		<hr>
 		<form class="flex column" onsubmit="login(); return false;">
@@ -14,6 +14,36 @@
 			<input id="loginPanelPassword" type="text" class="inputField" value="Password"></input>
 			<button>Log in</button>
 		</form>
+	</div>
+-->
+	<div id="taskerPanel" class="guiPanel">
+
+		<div id="importantAndUrgent" class="redAlerts tasksContainer">
+			<h1>Important and urgent</h1>
+			<div class="alert">Test
+				<div class="alertButtons">
+					<img src="assets/edit.png" width="15px" height="15px"></img>
+					<img src="assets/delete.png" width="15px" height="15px"></img>
+				</div>
+			</div>
+			<div class="alert">Test</div>
+		</div>
+		<div id="importantAndNotUrgent" class="orangeAlerts tasksContainer">
+			<h1>Important and not urgent</h1>
+			<div class="alert">Test</div>
+			<div class="alert">Test</div>
+		</div>
+		<div id="notImportantAndUrgent" class="yellowAlerts tasksContainer">
+			<h1>Not important but urgent</h1>
+			<div class="alert">Test</div>
+			<div class="alert">Test</div>
+		</div>
+		<div id="notImportantAndNotUrgent" class="greenAlerts tasksContainer">
+			<h1>Not important nor urgent</h1>
+			<div class="alert">Test</div>
+			<div class="alert">Test</div>
+		</div>
+
 	</div>
 
 

@@ -67,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -336,5 +336,146 @@
        cx="216.42857"
        cy="970.2193"
        r="13.571428" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4183"
+       cx="400"
+       cy="806.64789"
+       r="14.285714" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4185"
+       cx="494.28571"
+       cy="884.50507"
+       rx="11.428572"
+       ry="12.142858" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4187"
+       cx="630.71429"
+       cy="894.50507"
+       rx="7.8571429"
+       ry="9.2857141" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4189"
+       cx="857.85712"
+       cy="870.21936"
+       r="9.2857141" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4191"
+       cx="655.71429"
+       cy="751.64789"
+       rx="7.1428571"
+       ry="7.8571429" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4193"
+       cx="75.714287"
+       cy="825.21936"
+       r="8.5714283" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4195"
+       cx="41.42857"
+       cy="918.07648"
+       r="8.5714283" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4197"
+       cx="974.28571"
+       cy="830.21936"
+       rx="4.2857141"
+       ry="5" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4199"
+       cx="837.85712"
+       cy="814.50507"
+       rx="10.714286"
+       ry="9.2857141" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4201"
+       cx="731.42859"
+       cy="915.93359"
+       rx="5.7142859"
+       ry="5" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4203"
+       cx="240.71428"
+       cy="840.21936"
+       r="6.4285712" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4205"
+       cx="100"
+       cy="690.21936"
+       rx="10"
+       ry="10.714286" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4207"
+       cx="196.42857"
+       cy="746.64789"
+       rx="5"
+       ry="5.7142859" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4209"
+       cx="121.42857"
+       cy="923.79077"
+       rx="15.714286"
+       ry="17.142857" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4211"
+       cx="50"
+       cy="988.79077"
+       rx="10"
+       ry="10.714286" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4213"
+       cx="-22.857143"
+       cy="968.79077"
+       rx="10"
+       ry="10.714286" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4215"
+       cx="-10.714286"
+       cy="883.79077"
+       rx="7.8571429"
+       ry="8.5714283" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4217"
+       cx="697.85712"
+       cy="998.79077"
+       r="16.428572" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4219"
+       cx="565"
+       cy="970.93359"
+       rx="15"
+       ry="14.285714" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4221"
+       cx="954.28571"
+       cy="756.64789"
+       rx="10"
+       ry="8.5714283" />
+    <ellipse
+       style="fill:#ffffff;stroke:none;stroke-opacity:1"
+       id="path4223"
+       cx="969.28571"
+       cy="899.50507"
+       rx="15"
+       ry="15.714286" />
   </g>
 </svg>

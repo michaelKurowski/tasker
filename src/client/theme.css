@@ -11,6 +11,11 @@ input {
 
 button {
 	margin: 10px;
+	background-color: #8abe79;
+	border-style: none;
+	padding: 5px;
+	color: white;
+	font-size: 20px;
 }
 
 .guiPanel {
@@ -36,6 +41,45 @@ button {
 
 .switchable {
 
+}
+
+/*--------------------------------TASKS VIEW--------------------------------*/
+
+#taskerPanel {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.tasksContainer {
+	border-style: solid;
+	width: 40%;
+	height: 40%;
+	margin: 4%;
+	background-color: white;
+	margin: 5px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.redAlerts > div{
+	background-color: red;
+}
+.orangeAlerts > div{
+	background-color: orange;
+}
+.yellowAlerts > div{
+	background-color: yellow;
+}
+.greenAlerts > div{
+	background-color: green;
+}
+
+.alert {
+	margin: 5px;
+}
+
+.alertButtons {
+	float: right;
 }
 
 @keyframes switchOut {

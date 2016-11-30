@@ -7,7 +7,7 @@ window.onload = function () {
 	toArray(inputsHostObj).forEach( function (element) {
 		declareInputField(element)
 	})
-
+	api()
 }
 
 
