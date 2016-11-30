@@ -78,6 +78,16 @@ button {
 	margin: 5px;
 }
 
+
+/* TODO: Enrolling history Records*/
+.alertWrapper:hover > .history {
+	height: 200px;
+}
+.history {
+	height: 0px;
+}
+
+
 .alertButtons {
 	float: right;
 }
@@ -87,6 +97,7 @@ button {
 	border-width: 1px;
 	border-color: silver;
 	margin-top: 5px;
+
 }
 
 @keyframes switchOut {
