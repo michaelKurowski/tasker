@@ -7,7 +7,10 @@ var tasksManager = {
 		delete this.list[id]
 	},
 	getTasksByCategory: function (category) {
-		return this.list.filter( function (element) {
+		return this.list.map( function (element, index) {
+				element.id = index
+				return element
+			}).filter( function (element) {
 			var alertCategory =
 				(element.urgency === 1 && element.importance === 1) ? 1 :
 				(element.urgency === 2 && element.importance === 1) ? 2 :
@@ -20,7 +23,11 @@ var tasksManager = {
 		var html = ''
 		var listOfTasks = this.getTasksByCategory(tasksCategory)
 		listOfTasks.forEach( function (task) {
-			html += '<div class="alertWrapper"><div class="alert '
+
+			html += '<div class="alertWrapper">'
+
+			//Alert div, choosing color
+			html += '<div class="alert '
 			switch(tasksCategory) {
 				case 1:
 					html += 'red'
@@ -35,7 +42,10 @@ var tasksManager = {
 					html += 'green'
 					break
 			}
-			html += '">'
+			html += '"'
+			html += 'onclick="tasksManager.list[' + task.id + '].addHistoryRecord(prompt(\'What happened?\'))"'
+			html += '>'
+
 			html += task.title
 			html += '<div class="alertButtons"><span>'
 			html += '2h'
@@ -45,9 +55,10 @@ var tasksManager = {
 				html += '<div class="historyRecord">'
 				html += historyRecord.title
 				html += '<div class="alertButtons"><img src="assets/edit.png" width="15px" height="15px"></img><img src="assets/delete.png" width="15px" height="15px"></img></div>'
+				html += '</div>'
 			})
 			html += '</div>'
-
+			html += '</div>'
 		})
 		elementHTML.innerHTML = html
 	}

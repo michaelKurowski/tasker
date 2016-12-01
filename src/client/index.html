@@ -16,73 +16,40 @@
 		</form>
 	</div>
 -->
-	<div id="taskerPanel" class="guiPanel transparent">
+	<div id="taskerPanel" class="guiPanel transparent width60">
 
 		<div id="importantAndUrgent" class="redAlerts tasksContainer">
 
-			<div class="flex flexJustifyCenter"> <img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), prompt('Urgency'), prompt('Importance')); tasksManager.renderTasks(1, document.getElementById('redTasks'))"></img></div>
+			<div class="flex flexJustifyCenter smallMargin">
+				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 1, 1); tasksManager.renderTasks(1, document.getElementById('redTasks'))"></img>
+			</div>
 			<div class="tasksList" id="redTasks">
-				<div class="alertWrapper">
-					<div class="alert">Test
-						<div class="alertButtons">
-							<span>2h</span>
-							<img src="assets/edit.png" width="15px" height="15px"></img>
-							<img src="assets/delete.png" width="15px" height="15px"></img>
-						</div>
-					</div>
-					<div class="history flex column">
-						<div class="historyRecord">Ala
-							<div class="alertButtons">
-								<img src="assets/edit.png" width="15px" height="15px"></img>
-								<img src="assets/delete.png" width="15px" height="15px"></img>
-							</div>
-						</div>
-						<div class="historyRecord">Ala2
-							<div class="alertButtons">
-								<img src="assets/edit.png" width="15px" height="15px"></img>
-								<img src="assets/delete.png" width="15px" height="15px"></img>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="alertWrapper">
-					<div class="alert">Test
-						<div class="alertButtons">
-							<img src="assets/edit.png" width="15px" height="15px"></img>
-							<img src="assets/delete.png" width="15px" height="15px"></img>
-						</div>
-					</div>
-					<div class="history flex column">
-						<div class="historyRecord">Ala
-							<div class="alertButtons">
-								<img src="assets/edit.png" width="15px" height="15px"></img>
-								<img src="assets/delete.png" width="15px" height="15px"></img>
-							</div>
-						</div>
-						<div class="historyRecord">Ala2
-							<div class="alertButtons">
-								<img src="assets/edit.png" width="15px" height="15px"></img>
-								<img src="assets/delete.png" width="15px" height="15px"></img>
-							</div>
-						</div>
-					</div>
-				</div>
+
 			</div>
 		</div>
 		<div id="importantAndNotUrgent" class="orangeAlerts tasksContainer">
-			<h1>Important and not urgent</h1>
-			<div class="alert">Test</div>
-			<div class="alert">Test</div>
+			<div class="flex flexJustifyCenter smallMargin">
+				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 2, 1); tasksManager.renderTasks(2, document.getElementById('orangeTasks'))"></img>
+			</div>
+			<div class="tasksList" id="orangeTasks">
+
+			</div>
 		</div>
 		<div id="notImportantAndUrgent" class="yellowAlerts tasksContainer">
-			<h1>Not important but urgent</h1>
-			<div class="alert">Test</div>
-			<div class="alert">Test</div>
+			<div class="flex flexJustifyCenter smallMargin">
+				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 1, 2); tasksManager.renderTasks(3, document.getElementById('yellowTasks'))"></img>
+			</div>
+			<div class="tasksList" id="yellowTasks">
+
+			</div>
 		</div>
 		<div id="notImportantAndNotUrgent" class="greenAlerts tasksContainer">
-			<h1>Not important nor urgent</h1>
-			<div class="alert">Test</div>
-			<div class="alert">Test</div>
+			<div class="flex flexJustifyCenter smallMargin">
+				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 2, 2); tasksManager.renderTasks(4, document.getElementById('greenTasks'))"></img>
+			</div>
+			<div class="tasksList" id="greenTasks">
+
+			</div>
 		</div>
 
 	</div>

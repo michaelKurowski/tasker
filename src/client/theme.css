@@ -22,6 +22,7 @@ button {
 	background-color: white;
 	padding: 20px;
     animation-duration: 1s;
+
 }
 .flex {
 	display: flex;
@@ -43,6 +44,12 @@ button {
 }
 .transparent {
 	background-color: rgba(0,0,0,0)
+}
+.smallMargin {
+	margin: 15px;
+}
+.width60 {
+	width: 60%;
 }
 
 /*--------------------------------TASKS VIEW--------------------------------*/
