@@ -1,7 +1,7 @@
 var tasksManager = {
 	list: [],
 	addTask: function (title, urgency, importance, deadline) {
-		this.list.push( createTask(title, urgency, importance, deadline) )
+		this.list.push( createTask(title, parseInt(urgency), parseInt(importance), deadline) )
 	},//tasksManager.addTask("Dupa", 1, 1)
 	deleteTask: function(id) {
 		delete this.list[id]
@@ -16,11 +16,26 @@ var tasksManager = {
 			return alertCategory === category
 		})
 	},
-	renderTasks: function (tasksCategory) {
+	renderTasks: function (tasksCategory, elementHTML) {
 		var html = ''
 		var listOfTasks = this.getTasksByCategory(tasksCategory)
 		listOfTasks.forEach( function (task) {
-			html += '<div class="alertWrapper"><div class="alert">'
+			html += '<div class="alertWrapper"><div class="alert '
+			switch(tasksCategory) {
+				case 1:
+					html += 'red'
+					break
+				case 2:
+					html += 'orange'
+					break
+				case 3:
+					html += 'yellow'
+					break
+				case 4:
+					html += 'green'
+					break
+			}
+			html += '">'
 			html += task.title
 			html += '<div class="alertButtons"><span>'
 			html += '2h'
@@ -34,7 +49,7 @@ var tasksManager = {
 			html += '</div>'
 
 		})
-		return html
+		elementHTML.innerHTML = html
 	}
 }
 

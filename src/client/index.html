@@ -20,8 +20,8 @@
 
 		<div id="importantAndUrgent" class="redAlerts tasksContainer">
 
-			<div class="flex flexJustifyCenter"> <img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), prompt('Urgency'), prompt('Importance'))"></img></div>
-			<div class="tasksList">
+			<div class="flex flexJustifyCenter"> <img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), prompt('Urgency'), prompt('Importance')); tasksManager.renderTasks(1, document.getElementById('redTasks'))"></img></div>
+			<div class="tasksList" id="redTasks">
 				<div class="alertWrapper">
 					<div class="alert">Test
 						<div class="alertButtons">
