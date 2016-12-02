@@ -68,7 +68,7 @@ var $T = function (tsk) {
 				//Alert div, choosing color
 					'<div class="alert ' + category +'">'+
 						'<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'+
-						'<div class="alertButtons"><span>' + '2h' + '</span>'+
+						'<div class="alertButtons"><span>| ' + '2h' + '</span>'+
 							'<img src="assets/edit.png" width="15px" height="15px"></img>'+
 							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
