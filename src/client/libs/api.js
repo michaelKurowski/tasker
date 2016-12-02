@@ -63,23 +63,28 @@ var $T = function (tsk) {
 			var html = ''
 			var listOfTasks = tsk.tasksController.getByCategory(category)
 			listOfTasks.forEach( function (task) {
-				html += '<div class="alertWrapper">'
-
+				html +=
+				'<div class="alertWrapper">'+
 				//Alert div, choosing color
-				html += '<div class="alert ' + category +'">'
-				html += '<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'
-				html += '<div class="alertButtons"><span>'
-				html += '2h'
-				html += '</span><img src="assets/edit.png" width="15px" height="15px"></img><img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img></div></div>'
-				html += '<div class="history flex column">'
-				task.history.forEach( function (historyRecord) {
-					html += '<div class="historyRecord">'
-					html += historyRecord.title
-					html += '<div class="alertButtons"><img src="assets/edit.png" width="15px" height="15px"></img><img src="assets/delete.png" width="15px" height="15px"></img></div>'
-					html += '</div>'
-				})
-				html += '</div>'
-				html += '</div>'
+					'<div class="alert ' + category +'">'+
+						'<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'+
+						'<div class="alertButtons"><span>' + '2h' + '</span>'+
+							'<img src="assets/edit.png" width="15px" height="15px"></img>'+
+							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img>'+
+						'</div>'+
+					'</div>'+
+					'<div class="history flex column">'
+					task.history.forEach( function (historyRecord) {
+						html +=
+						'<div class="historyRecord">' + historyRecord.title +
+							'<div class="alertButtons">'+
+								'<img src="assets/edit.png" width="15px" height="15px"></img>'+
+								'<img src="assets/delete.png" width="15px" height="15px"></img>'+
+							'</div>'+
+						'</div>'
+					})
+					'</div>'+
+				'</div>'
 			})
 			GUIelems.tasks[category].innerHTML = html
 
