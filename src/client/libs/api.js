@@ -63,7 +63,6 @@ var $T = function (tsk) {
 			var html = ''
 			var listOfTasks = tsk.tasksController.getByCategory(category)
 			listOfTasks.forEach( function (task) {
-				console.log(task)
 				html += '<div class="alertWrapper">'
 
 				//Alert div, choosing color
@@ -111,7 +110,7 @@ var $T = function (tsk) {
 		deadline: 0,
 		history: [],
 		addHistoryRecord: function (name){
-			if (!name) throw 'task object : .addHistoryRecord() name argument coers to false' 
+			if (!name) throw 'task object : .addHistoryRecord() name argument coers to false'
 			var newHistoryRecord = Object.create(historyRecordProto)
 			newHistoryRecord.title = name
 			newHistoryRecord.timestamp = new Date().getTime()
