@@ -1,8 +1,10 @@
 <head>
 	<title>Tasker</title>
 	<link rel="stylesheet" href="theme.css">
+	<script src="config.js"></script>
 	<script src="libs/webUtils.js"></script>
 	<script src="libs/api.js"></script>
+	<script src="main.js"></script>
 </head>
 <body class="flex column flexJustifyCenter centerContent">
 	<!--
@@ -18,34 +20,34 @@
 -->
 	<div id="taskerPanel" class="guiPanel transparent width60">
 
-		<div id="importantAndUrgent" class="redAlerts tasksContainer">
+		<div  class="redAlerts tasksContainer">
 
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 1, 1); tasksManager.renderTasks(1, document.getElementById('redTasks'))"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 1, 1); $T.view.renderAllTasks()"></img>
 			</div>
 			<div class="tasksList" id="redTasks">
 
 			</div>
 		</div>
-		<div id="importantAndNotUrgent" class="orangeAlerts tasksContainer">
+		<div class="orangeAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 2, 1); tasksManager.renderTasks(2, document.getElementById('orangeTasks'))"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 2, 1); $T.view.renderAllTasks()"></img>
 			</div>
 			<div class="tasksList" id="orangeTasks">
 
 			</div>
 		</div>
-		<div id="notImportantAndUrgent" class="yellowAlerts tasksContainer">
+		<div class="yellowAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 1, 2); tasksManager.renderTasks(3, document.getElementById('yellowTasks'))"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 1, 2); $T.view.renderAllTasks()"></img>
 			</div>
 			<div class="tasksList" id="yellowTasks">
 
 			</div>
 		</div>
-		<div id="notImportantAndNotUrgent" class="greenAlerts tasksContainer">
+		<div class="greenAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="tasksManager.addTask(prompt('Title'), 2, 2); tasksManager.renderTasks(4, document.getElementById('greenTasks'))"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 2, 2); $T.view.renderAllTasks()"></img>
 			</div>
 			<div class="tasksList" id="greenTasks">
 
