@@ -19,7 +19,7 @@ var $T = function (tsk) {
 			delete this.list[id]
 		},
 		edit: function (id, updateObj) {
-			if (!Object.assign(this.list[i], updateObj)) throw 'taskerManager.edit() specified task does not exists'
+			if (!Object.assign(this.list[id], updateObj)) throw 'taskerManager.edit() specified task does not exists'
 		},
 		get: function (id) {
 			return this.list[id]
@@ -69,7 +69,7 @@ var $T = function (tsk) {
 					'<div class="alert ' + category +'">'+
 						'<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'+
 						'<div class="alertButtons"><span>| ' + '2h' + '</span>'+
-							'<img src="assets/edit.png" width="15px" height="15px"></img>'+
+							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + task.id + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
 							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
 					'</div>'+
