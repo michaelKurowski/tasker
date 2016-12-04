@@ -62,24 +62,24 @@ var $T = function (tsk) {
 		renderTasksByCategory: function (category) {
 			var html = ''
 			var listOfTasks = tsk.tasksController.getByCategory(category)
-			listOfTasks.forEach( function (task) {
+			listOfTasks.forEach( function (task, taskIndex) {
 				html +=
 				'<div class="alertWrapper">'+
 				//Alert div, choosing color
 					'<div class="alert ' + category +'">'+
-						'<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'+
+						'<span onclick="$T.tasksController.get(' + taskIndex + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()">' + task.title + '</span>'+
 						'<div class="alertButtons"><span>| ' + '2h' + '</span>'+
-							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + task.id + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
-							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img>'+
+							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + taskIndex + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
+							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + taskIndex + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
 					'</div>'+
 					'<div class="history flex column">'
-					task.history.forEach( function (historyRecord) {
+					task.history.forEach( function (historyRecord, historyRecordId) {
 						html +=
 						'<div class="historyRecord">' + historyRecord.title +
 							'<div class="alertButtons">'+
-								'<img src="assets/edit.png" width="15px" height="15px"></img>'+
-								'<img src="assets/delete.png" width="15px" height="15px"></img>'+
+								'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.get(' + taskIndex + ').editHistoryRecord(' + historyRecordId + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
+								'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.get(' + taskIndex + ').removeHistoryRecord(' + historyRecordId + '); $T.view.renderAllTasks()"></img>'+
 							'</div>'+
 						'</div>'
 					})
@@ -121,6 +121,12 @@ var $T = function (tsk) {
 			newHistoryRecord.title = name
 			newHistoryRecord.timestamp = new Date().getTime()
 			this.history.push(newHistoryRecord)
+		},
+		removeHistoryRecord: function (id) {
+			delete this.history[id]
+		},
+		editHistoryRecord: function (id, updateObj) {
+			if (!Object.assign(this.history[id], updateObj)) throw 'task object: .editHistoryRecord() specified record does not exists'
 		}
 	}
 
