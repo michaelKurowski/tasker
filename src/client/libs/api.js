@@ -1,7 +1,4 @@
 
-
-
-
 var $T = function (tsk) {
 	var screens = {}
 	var GUIelems = tsk.GUIelems = {}
@@ -182,6 +179,17 @@ var $T = function (tsk) {
 				e.preventDefault()
 			}
 		}
+
+		setInterval(function () {
+			tsk.view.renderAllTasks()
+		}, 1000)
+
+		setInterval(function () {
+			Array.from(document.querySelectorAll('.tipOfTheDay')).forEach( function (element) {
+				element.innerHTML = config.tips[Math.round(Math.random() * config.tips.length)]
+			})
+		}, 60000)
+
 	}
 
 
