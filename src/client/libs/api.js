@@ -136,8 +136,13 @@ var $T = function (tsk) {
 				var minute = GUIelems.dataPicker.minutePicker.value
 				var date = GUIelems.dataPicker.datePicker.value
 				console.log(title, hour, minute, date)
-				if (title && hour && minute && date) {
-					var dateTimestamp = Date.parse(date + ' ' + hour + ':' + minute + ':00')
+				var dateTimestamp = Date.parse(date + ' ' + hour + ':' + minute + ':00')
+				console.log(dateTimestamp, new Date().getTime(), dateTimestamp > new Date().getTime())
+				if (dateTimestamp < new Date().getTime()) {
+					alert('You can not set a past date as a deadline.')
+				}
+				if (title && hour && minute && date && dateTimestamp > new Date().getTime()) {
+
 					switch (tsk.globals.currentlyAdding) {
 						case 'red':
 							$T.tasksController.add(title, 1, 1, dateTimestamp)
