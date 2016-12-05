@@ -51,7 +51,25 @@ button {
 	width: 60%;
 }
 
-/*--------------------------------TASKS VIEW--------------------------------*/
+/*Callendar*/
+.pickerLabel {
+	color: #5f5f5f;
+}
+#datePicker {
+}
+#hourPicker {
+	width: 20px;
+	margin-right: 1px;
+}
+#minutePicker {
+	width: 20px;
+	margin: 1px;
+}
+#dataPickerPanel {
+	position: absolute;
+	display: none;
+}
+/*---------------------------------TASKS VIEW---------------------------------*/
 
 #taskerPanel {
 	display: flex;
@@ -115,6 +133,10 @@ button {
 
 .alertButtons {
 	float: right;
+}
+.alertTitle {
+	width: 100%;
+	display: inline;
 }
 
 .historyRecord {

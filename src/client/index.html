@@ -1,13 +1,21 @@
 <head>
 	<title>Tasker</title>
 	<link rel="stylesheet" href="theme.css">
+	<link rel="stylesheet" href="pika.css">
 	<script src="config.js"></script>
 	<script src="libs/webUtils.js"></script>
 	<script src="libs/api.js"></script>
-	<!--<script src="libs/pikaday.js"></script>-->
+	<script src="libs/pikaday.js"></script>
 	<script src="main.js"></script>
 </head>
+
+
 <body class="flex column flexJustifyCenter centerContent">
+	<div id="dataPickerPanel" class="guiPanel" style="width: 20%;">
+		<span class="pickerLabel">Title:</span><input type="text" id="titlePicker"><br>
+		<span class="pickerLabel">Date:</span><input type="text" id="datePicker"><br>
+		<span class="pickerLabel">Hour:</span><input type="text" id="hourPicker">:<input type="text" id="minutePicker"><br>
+	</div>
 	<!--
 	<div id="loginPanel" class="guiPanel" style="width: 20%;">
 		<h1>Login page</h1>
@@ -25,7 +33,7 @@
 		<div  class="redAlerts tasksContainer">
 
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 1, 1); $T.view.renderAllTasks()"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('red')"></img>
 			</div>
 			<div class="tasksList" id="redTasks">
 
@@ -33,7 +41,7 @@
 		</div>
 		<div class="orangeAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 2, 1); $T.view.renderAllTasks()"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('orange')"></img>
 			</div>
 			<div class="tasksList" id="orangeTasks">
 
@@ -41,7 +49,7 @@
 		</div>
 		<div class="yellowAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 1, 2); $T.view.renderAllTasks()"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('yellow')"></img>
 			</div>
 			<div class="tasksList" id="yellowTasks">
 
@@ -49,7 +57,7 @@
 		</div>
 		<div class="greenAlerts tasksContainer">
 			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.tasksController.add(prompt('Title'), 2, 2); $T.view.renderAllTasks()"></img>
+				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('green')"></img>
 			</div>
 			<div class="tasksList" id="greenTasks">
 
