@@ -67,7 +67,12 @@ var $T = function (tsk) {
 			var listOfTasks = tsk.tasksController.getByCategory(category)
 
 			listOfTasks.forEach( function (task, taskIndex) {
+				var timeUnit = 'h'
 				var toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*100))/10
+				if (toDeadline < 1) {
+					timeUnit = 'm'
+					toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*1000))
+				}
 				//console.log()
 
 				html +=
@@ -75,7 +80,7 @@ var $T = function (tsk) {
 				//Alert div, choosing color
 					'<div class="alert ' + category +'">'+
 						'<span onclick="$T.tasksController.get(' + taskIndex + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()" class="alertTitle">' + task.title + '</span>'+
-						'<div class="alertButtons"><span>| ' + toDeadline + 'h' + '</span>'+
+						'<div class="alertButtons"><span>| ' + toDeadline + timeUnit + '</span>'+
 							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + taskIndex + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
 							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + taskIndex + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
