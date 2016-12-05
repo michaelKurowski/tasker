@@ -65,13 +65,17 @@ var $T = function (tsk) {
 		renderTasksByCategory: function (category) {
 			var html = ''
 			var listOfTasks = tsk.tasksController.getByCategory(category)
+
 			listOfTasks.forEach( function (task, taskIndex) {
+				var toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*100))/10
+				//console.log()
+
 				html +=
 				'<div class="alertWrapper">'+
 				//Alert div, choosing color
 					'<div class="alert ' + category +'">'+
 						'<span onclick="$T.tasksController.get(' + taskIndex + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()" class="alertTitle">' + task.title + '</span>'+
-						'<div class="alertButtons"><span>| ' + '2h' + '</span>'+
+						'<div class="alertButtons"><span>| ' + toDeadline + 'h' + '</span>'+
 							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + taskIndex + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
 							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + taskIndex + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
@@ -131,18 +135,19 @@ var $T = function (tsk) {
 				var date = GUIelems.dataPicker.datePicker.value
 				console.log(title, hour, minute, date)
 				if (title && hour && minute && date) {
+					var dateTimestamp = Date.parse(date + ' ' + hour + ':' + minute + ':00')
 					switch (tsk.globals.currentlyAdding) {
 						case 'red':
-							$T.tasksController.add(title, 1, 1)
+							$T.tasksController.add(title, 1, 1, dateTimestamp)
 							break
 						case 'orange':
-							$T.tasksController.add(title, 2, 1)
+							$T.tasksController.add(title, 2, 1, dateTimestamp)
 							break
 						case 'yellow':
-							$T.tasksController.add(title, 1, 2)
+							$T.tasksController.add(title, 1, 2, dateTimestamp)
 							break
 						case 'green':
-							$T.tasksController.add(title, 2, 2)
+							$T.tasksController.add(title, 2, 2, dateTimestamp)
 							break
 						default:
 							throw 'No alert category specified'
