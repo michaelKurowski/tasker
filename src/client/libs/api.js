@@ -8,7 +8,9 @@ var $T = function (tsk) {
 	}
 	tsk.tasksController = {
 		list: [],
+		changed: false,
 		add: function (title, urgency, importance, deadline) {
+			this.changed = true
 			if (title && (urgency !== undefined) && (importance !== undefined)) {
 				this.list.push( createTask(title, parseInt(urgency), parseInt(importance), deadline) )
 			} else {
@@ -16,9 +18,11 @@ var $T = function (tsk) {
 			}
 		},
 		remove: function (id) {
+			this.changed = true
 			delete this.list[id]
 		},
 		edit: function (id, updateObj) {
+			this.changed = true
 			if (!Object.assign(this.list[id], updateObj)) throw 'taskerManager.edit() specified task does not exists'
 		},
 		get: function (id) {
@@ -36,27 +40,50 @@ var $T = function (tsk) {
 					'green'
 				return alertCategory === category
 			})
+		},
+		checkUrgency: function () {
+			var self = this
+			this.list = this.list.map( function (element) {
+				if (element.urgency === 2) {
+
+					var daysToDeadline = Math.round((element.deadline - new Date().getTime()) / (60*60*24*1000))
+					if (daysToDeadline < 1) {
+						self.changed = true
+						element.urgency = 1
+					}
+
+				}
+				var hoursToDeadline = (element.deadline - new Date().getTime()) / (60*60*1000)
+				if (hoursToDeadline < 1 && !element.veryUrgent) {
+					self.changed = true
+					element.veryUrgent = true
+				}
+				return element
+			})
 		}
 	}
 
 	tsk.view = {
 		renderAllTasks: function () {
+
 			var self = this
-			var tasksController = tsk.tasksController
-			var listsOfTasks = [
-					tasksController.getByCategory('red'),
-					tasksController.getByCategory('orange'),
-					tasksController.getByCategory('yellow'),
-					tasksController.getByCategory('green')
-				]
-			listsOfTasks.forEach( function (element, index) {
-				var alertCategory =
-					(index === 1) ? 'red' :
-					(index === 2) ? 'orange' :
-					(index === 3) ? 'yellow' :
-					'green'
-				self.renderTasksByCategory(alertCategory)
-			})
+			if (tsk.tasksController.changed){
+				var tasksController = tsk.tasksController
+				var listsOfTasks = [
+						tasksController.getByCategory('red'),
+						tasksController.getByCategory('orange'),
+						tasksController.getByCategory('yellow'),
+						tasksController.getByCategory('green')
+					]
+				listsOfTasks.forEach( function (element, index) {
+					var alertCategory =
+						(index === 1) ? 'red' :
+						(index === 2) ? 'orange' :
+						(index === 3) ? 'yellow' :
+						'green'
+					self.renderTasksByCategory(alertCategory)
+			})}
+			tsk.tasksController.changed = false
 
 		},
 		renderTasksByCategory: function (category) {
@@ -64,18 +91,24 @@ var $T = function (tsk) {
 			var listOfTasks = tsk.tasksController.getByCategory(category)
 
 			listOfTasks.forEach( function (task, taskIndex) {
-				var timeUnit = 'h'
-				var toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*100))/10
+				var timeUnit = 'd'
+				var toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*24*1000))
 				if (toDeadline < 1) {
-					timeUnit = 'm'
-					toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*1000))
+					timeUnit = 'h'
+					toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*100))/10
+					if (toDeadline < 1) {
+						timeUnit = 'm'
+						toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*1000))
+					}
 				}
+				var alertCategory = category
+				if (task.veryUrgent) alertCategory += ' blinking'
 				//console.log()
 
 				html +=
 				'<div class="alertWrapper">'+
 				//Alert div, choosing color
-					'<div class="alert ' + category +'">'+
+					'<div class="alert ' + alertCategory + '">'+
 						'<span onclick="$T.tasksController.get(' + taskIndex + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()" class="alertTitle">' + task.title + '</span>'+
 						'<div class="alertButtons"><span>| ' + toDeadline + timeUnit + '</span>'+
 							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + taskIndex + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
@@ -187,6 +220,7 @@ var $T = function (tsk) {
 
 		setInterval(function () {
 			tsk.view.renderAllTasks()
+			tsk.tasksController.checkUrgency()
 		}, 1000)
 
 		setInterval(function () {
@@ -205,8 +239,10 @@ var $T = function (tsk) {
 		urgency: 0,
 		importance: 0,
 		deadline: 0,
+		veryUrgent: false,
 		history: [],
 		addHistoryRecord: function (name){
+			tsk.tasksController.changed = true
 			if (!name) throw 'task object : .addHistoryRecord() name argument coers to false'
 			var newHistoryRecord = Object.create(historyRecordProto)
 			newHistoryRecord.title = name
@@ -214,9 +250,11 @@ var $T = function (tsk) {
 			this.history.push(newHistoryRecord)
 		},
 		removeHistoryRecord: function (id) {
+			tsk.tasksController.changed = true
 			delete this.history[id]
 		},
 		editHistoryRecord: function (id, updateObj) {
+			tsk.tasksController.changed = true
 			if (!Object.assign(this.history[id], updateObj)) throw 'task object: .editHistoryRecord() specified record does not exists'
 		}
 	}
@@ -234,6 +272,7 @@ var $T = function (tsk) {
 		newTask.importance = importance
 		newTask.deadline = deadline
 		newTask.history = []
+		newTask.veryUrgent = false
 		return newTask
 	}
 
