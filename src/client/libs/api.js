@@ -60,6 +60,14 @@ var $T = function (tsk) {
 				}
 				return element
 			})
+		},
+		saveToCookies: function () {
+			if (this.changed) {
+				localStorage.setItem('saveData', JSON.stringify(this.list))
+			}
+		},
+		loadFromCookies: function () {
+			this.list = JSON.parse(localStorage.getItem('saveData'))
 		}
 	}
 
@@ -67,23 +75,21 @@ var $T = function (tsk) {
 		renderAllTasks: function () {
 
 			var self = this
-			if (tsk.tasksController.changed){
-				var tasksController = tsk.tasksController
-				var listsOfTasks = [
-						tasksController.getByCategory('red'),
-						tasksController.getByCategory('orange'),
-						tasksController.getByCategory('yellow'),
-						tasksController.getByCategory('green')
-					]
-				listsOfTasks.forEach( function (element, index) {
-					var alertCategory =
-						(index === 1) ? 'red' :
-						(index === 2) ? 'orange' :
-						(index === 3) ? 'yellow' :
-						'green'
-					self.renderTasksByCategory(alertCategory)
-			})}
-			tsk.tasksController.changed = false
+			var tasksController = tsk.tasksController
+			var listsOfTasks = [
+					tasksController.getByCategory('red'),
+					tasksController.getByCategory('orange'),
+					tasksController.getByCategory('yellow'),
+					tasksController.getByCategory('green')
+				]
+			listsOfTasks.forEach( function (element, index) {
+				var alertCategory =
+					(index === 1) ? 'red' :
+					(index === 2) ? 'orange' :
+					(index === 3) ? 'yellow' :
+					'green'
+				self.renderTasksByCategory(alertCategory)
+			})
 
 		},
 		renderTasksByCategory: function (category) {
@@ -140,6 +146,10 @@ var $T = function (tsk) {
 
 
 	tsk.init = function () {
+		console.log('cookie', document.cookie)
+		if (localStorage.getItem('saveData') !== '') tsk.tasksController.loadFromCookies()
+
+
 		GUIelems.login = document.getElementById('loginPanel')
 		GUIelems.tasks = document.getElementById('taskerPanel')
 		GUIelems.dataPicker = document.getElementById('dataPickerPanel')
@@ -218,9 +228,13 @@ var $T = function (tsk) {
 			}
 		}
 
-		setInterval(function () {
-			tsk.view.renderAllTasks()
-			tsk.tasksController.checkUrgency()
+		setInterval( function () {
+			if (tsk.tasksController.changed){
+				tsk.tasksController.saveToCookies()
+				tsk.tasksController.checkUrgency()
+				tsk.view.renderAllTasks()
+			}
+			tsk.tasksController.changed = false
 		}, 1000)
 
 		setInterval(function () {
@@ -228,7 +242,7 @@ var $T = function (tsk) {
 				element.innerHTML = config.tips[Math.round(Math.random() * config.tips.length)]
 			})
 		}, 60000)
-
+		tsk.view.renderAllTasks()
 	}
 
 
