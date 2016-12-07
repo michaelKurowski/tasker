@@ -1,21 +1,24 @@
 <head>
 	<title>Tasker</title>
 	<link rel="stylesheet" href="theme.css">
-	<link rel="stylesheet" href="pika.css">
 	<script src="config.js"></script>
 	<script src="libs/webUtils.js"></script>
 	<script src="libs/api.js"></script>
-	<script src="libs/pikaday.js"></script>
 	<script src="main.js"></script>
 </head>
 
 
 <body class="flex column flexJustifyCenter centerContent">
 	<div id="dataPickerPanel" class="guiPanel" style="width: 20%;">
-		<span class="pickerLabel">Title:</span><input type="text" id="titlePicker"><br>
-		<span class="pickerLabel">Date:</span><input type="text" id="datePicker"><br>
-		<span class="pickerLabel">Hour:</span><input type="text" id="hourPicker">:<input type="text" id="minutePicker"><br>
+		<form id="taskCreatorForm" action="">
+			<label class="pickerLabel">Title<input type="text" id="titlePicker" required></label><br>
+			<!--<span class="pickerLabel">Date:</span><input type="date" id="datePicker" required><br>-->
+			<label class="pickerLabel">Deadline:<input type="datetime-local" id="datePicker" required></label><br>
+			<!--<span class="pickerLabel">Hour:</span><input type="range" id="hourPicker" required>:<input type="text" id="minutePicker"><br>-->
+			<button type="submit" value="createAlert">Go</button>
+		</form>
 		<span class="tipOfTheDay">Keep your targets real</span>
+
 	</div>
 	<!--
 	<div id="loginPanel" class="guiPanel" style="width: 20%;">

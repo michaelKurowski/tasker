@@ -16,10 +16,12 @@ var $T = function (tsk) {
 			} else {
 				throw 'tasksController.add(), one or more required arguments is false'
 			}
+			this.checkUrgency()
 		},
 		remove: function (id) {
 			this.changed = true
-			delete this.list[id]
+			this.list.splice(id, 1)
+
 		},
 		edit: function (id, updateObj) {
 			this.changed = true
@@ -62,9 +64,7 @@ var $T = function (tsk) {
 			})
 		},
 		saveToCookies: function () {
-			if (this.changed) {
-				localStorage.setItem('saveData', JSON.stringify(this.list))
-			}
+			localStorage.setItem('saveData', JSON.stringify(this.list))
 		},
 		loadFromCookies: function () {
 			this.list = JSON.parse(localStorage.getItem('saveData'))
@@ -97,6 +97,7 @@ var $T = function (tsk) {
 			var listOfTasks = tsk.tasksController.getByCategory(category)
 
 			listOfTasks.forEach( function (task, taskIndex) {
+
 				var timeUnit = 'd'
 				var toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*60*24*1000))
 				if (toDeadline < 1) {
@@ -107,6 +108,7 @@ var $T = function (tsk) {
 						toDeadline = Math.round((task.deadline - new Date().getTime()) / (60*1000))
 					}
 				}
+				console.log(task.deadline - new Date().getTime())
 				var alertCategory = category
 				if (task.veryUrgent) alertCategory += ' blinking'
 				//console.log()
@@ -155,79 +157,54 @@ var $T = function (tsk) {
 		GUIelems.dataPicker = document.getElementById('dataPickerPanel')
 		GUIelems.dataPicker.titlePicker = document.getElementById('titlePicker')
 		GUIelems.dataPicker.datePicker = document.getElementById('datePicker')
-		GUIelems.dataPicker.hourPicker = document.getElementById('hourPicker')
-		GUIelems.dataPicker.minutePicker = document.getElementById('minutePicker')
+	//	GUIelems.dataPicker.datePicker = document.getElementById('datePicker')
+
 		GUIelems.tasks.red = document.getElementById('redTasks')
 		GUIelems.tasks.orange = document.getElementById('orangeTasks')
 		GUIelems.tasks.yellow = document.getElementById('yellowTasks')
 		GUIelems.tasks.green = document.getElementById('greenTasks')
+		GUIelems.taskCreatorForm = document.getElementById('taskCreatorForm')
+		document.onkeydown = function (e) {
+			if (e.key === 'Escape') GUIelems.dataPicker.style.display = 'none'
+		}
+		GUIelems.taskCreatorForm.onsubmit = function () {
+			var inputs = this.querySelectorAll('input')
+			var title = inputs[0].value
+			var deadline = new Date(inputs[1].value).getTime()
+			console.log(new Date(deadline))
+			if (deadline < new Date().getTime()) {
 
+				console.log(deadline, new Date(), deadline.getTime() < new Date().getTime())
+				alert('You can not set past date as the deadline.')
+				return false
+			}
+			switch (tsk.globals.currentlyAdding) {
+				case 'red':
+					$T.tasksController.add(title, 1, 1, deadline)
+					break
+				case 'orange':
+					$T.tasksController.add(title, 2, 1, deadline)
+					break
+				case 'yellow':
+					$T.tasksController.add(title, 1, 2, deadline)
+					break
+				case 'green':
+					$T.tasksController.add(title, 2, 2, deadline)
+					break
+				default:
+					throw 'No alert category specified'
+			}
+			GUIelems.dataPicker.style.display = 'none'
+			return false
+		}
 
 		GUIelems.dataPicker.init = function (category) {
 			$T.globals.currentlyAdding = category
 			GUIelems.dataPicker.titlePicker.value = ''
-			GUIelems.dataPicker.hourPicker.value = ''
-			GUIelems.dataPicker.minutePicker.value = ''
-			GUIelems.dataPicker.datePicker.value = ''
+			GUIelems.dataPicker.datePicker.value = toDateInput(new Date())
 			GUIelems.dataPicker.style.display = 'block'
-		}
-		document.onkeydown = function (e) {
-			if (e.which === 27) GUIelems.dataPicker.style.display = 'none'
-			if (e.key === 'Enter') {
-				var title = GUIelems.dataPicker.titlePicker.value
-				var hour = GUIelems.dataPicker.hourPicker.value
-				var minute = GUIelems.dataPicker.minutePicker.value
-				var date = GUIelems.dataPicker.datePicker.value
-				console.log(title, hour, minute, date)
-				var dateTimestamp = Date.parse(date + ' ' + hour + ':' + minute + ':00')
-				console.log(dateTimestamp, new Date().getTime(), dateTimestamp > new Date().getTime())
-				if (dateTimestamp < new Date().getTime()) {
-					alert('You can not set a past date as a deadline.')
-				}
-				if (title && hour && minute && date && dateTimestamp > new Date().getTime()) {
 
-					switch (tsk.globals.currentlyAdding) {
-						case 'red':
-							$T.tasksController.add(title, 1, 1, dateTimestamp)
-							break
-						case 'orange':
-							$T.tasksController.add(title, 2, 1, dateTimestamp)
-							break
-						case 'yellow':
-							$T.tasksController.add(title, 1, 2, dateTimestamp)
-							break
-						case 'green':
-							$T.tasksController.add(title, 2, 2, dateTimestamp)
-							break
-						default:
-							throw 'No alert category specified'
-					}
-					$T.view.renderAllTasks()
-					GUIelems.dataPicker.style.display = 'none'
-				}
-
-
-			}
 		}
-		//console.log(GUIelems)
-		GUIelems.dataPicker.hourPicker.onkeydown = function (e) {
-			var currentValue = GUIelems.dataPicker.hourPicker.value
-			if ( isNaN(parseInt(e.key)) && e.key !==  'Backspace' && e.key !==  'F5')  {
-				e.preventDefault()
-			} else if (parseInt(currentValue + e.key) > 23 || currentValue.length === 2){
-				e.preventDefault()
-				GUIelems.dataPicker.minutePicker.focus()
-				GUIelems.dataPicker.minutePicker.value = e.key
-			}
-		}
-		GUIelems.dataPicker.minutePicker.onkeydown = function (e) {
-			var currentValue = GUIelems.dataPicker.minutePicker.value
-			if ( isNaN(parseInt(e.key)) || parseInt(currentValue + e.key) > 59
-				|| currentValue.length === 2 && e.key !==  'Backspace' && e.key !==  'F5') {
-				e.preventDefault()
-			}
-		}
-
 		setInterval( function () {
 			if (tsk.tasksController.changed){
 				tsk.tasksController.saveToCookies()
@@ -293,7 +270,13 @@ var $T = function (tsk) {
 	function login() {
 		moveToScreen(screens.login, screens.tasker)
 	}
-
+	function toDateInput(date) {
+		var month = (date.getMonth() < 9) ? '0'+(date.getMonth()+1) : date.getMonth()+1
+		var day = (date.getDate() < 10) ? '0'+date.getDate() : date.getDate()
+		var hour = (date.getHours() < 10) ? '0'+(date.getHours()-1) : date.getHours()-1
+		var minute = (date.getMinutes() < 10) ? '0'+date.getMinutes() : date.getMinutes()
+		return date.getFullYear() + '-' + month + '-' + day + 'T' + hour + ':' + minute
+	}
 
 	return tsk
 }($T || {})
