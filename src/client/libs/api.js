@@ -1,4 +1,14 @@
 
+function dropLog () {
+	var link = document.createElement("a");
+	link.download = name;
+	link.href = 'data:text/json,' + JSON.stringify($T.tasksController.list);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	delete link;
+}
+
 var $T = function (tsk) {
 	var screens = {}
 	var GUIelems = tsk.GUIelems = {}
