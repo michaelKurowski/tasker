@@ -67,6 +67,8 @@ var $T = function (tsk) {
 				}
 				var hoursToDeadline = (element.deadline - new Date().getTime()) / (60*60*1000)
 				if (hoursToDeadline < 1 && !element.veryUrgent) {
+					var audio = new Audio('assets/bell.mp3')
+					audio.play()
 					self.changed = true
 					element.veryUrgent = true
 				}
