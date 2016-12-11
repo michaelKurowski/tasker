@@ -80,6 +80,11 @@ var $T = function (tsk) {
 		},
 		loadFromCookies: function () {
 			this.list = JSON.parse(localStorage.getItem('saveData'))
+			this.list.forEach( function (element, index, arr) {
+				var newTask = Object.create(taskProto)
+				var updatedTask = Object.assign(newTask, element)
+				arr[index] = updatedTask
+			})
 		}
 	}
 
@@ -250,7 +255,7 @@ var $T = function (tsk) {
 			var newHistoryRecord = Object.create(historyRecordProto)
 			newHistoryRecord.title = name
 			newHistoryRecord.timestamp = new Date().getTime()
-			this.history.push(newHistoryRecord)
+			this.history.unshift(newHistoryRecord)
 		},
 		removeHistoryRecord: function (id) {
 			tsk.tasksController.changed = true
