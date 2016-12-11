@@ -129,10 +129,10 @@ var $T = function (tsk) {
 				'<div class="alertWrapper">'+
 				//Alert div, choosing color
 					'<div class="alert ' + alertCategory + '">'+
-						'<span onclick="$T.tasksController.get(' + taskIndex + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()" class="alertTitle">' + task.title + '</span>'+
+						'<span onclick="$T.tasksController.get(' + task.id + ').addHistoryRecord(prompt(\'What happened?\')); $T.view.renderAllTasks()" class="alertTitle">' + task.title + '</span>'+
 						'<div class="alertButtons"><span>| ' + toDeadline + timeUnit + '</span>'+
-							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + taskIndex + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
-							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + taskIndex + '); $T.view.renderAllTasks()"></img>'+
+							'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.edit(' + task.id + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
+							'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.remove(' + task.id + '); $T.view.renderAllTasks()"></img>'+
 						'</div>'+
 					'</div>'+
 					'<div class="history flex column">'
@@ -140,8 +140,8 @@ var $T = function (tsk) {
 						html +=
 						'<div class="historyRecord">' + historyRecord.title +
 							'<div class="alertButtons">'+
-								'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.get(' + taskIndex + ').editHistoryRecord(' + historyRecordId + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
-								'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.get(' + taskIndex + ').removeHistoryRecord(' + historyRecordId + '); $T.view.renderAllTasks()"></img>'+
+								'<img src="assets/edit.png" width="15px" height="15px" onclick="$T.tasksController.get(' + task.id + ').editHistoryRecord(' + historyRecordId + ', {title:prompt(\'Provide a new title\')}); $T.view.renderAllTasks()"></img>'+
+								'<img src="assets/delete.png" width="15px" height="15px" onclick="$T.tasksController.get(' + task.id + ').removeHistoryRecord(' + historyRecordId + '); $T.view.renderAllTasks()"></img>'+
 							'</div>'+
 						'</div>'
 					})
