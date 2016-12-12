@@ -72,6 +72,10 @@ var $T = function (tsk) {
 					self.changed = true
 					element.veryUrgent = true
 				}
+				if (hoursToDeadline < 0) {
+					self.changed = true
+					element.obsolete = true
+				}
 				return element
 			})
 		},
@@ -127,6 +131,7 @@ var $T = function (tsk) {
 				}
 				console.log(task.deadline - new Date().getTime())
 				var alertCategory = category
+				if (task.obsolete) alertCategory = 'grey'
 				if (task.veryUrgent) alertCategory += ' blinking'
 				//console.log()
 
@@ -223,9 +228,9 @@ var $T = function (tsk) {
 
 		}
 		setInterval( function () {
+			tsk.tasksController.checkUrgency()
 			if (tsk.tasksController.changed){
 				tsk.tasksController.saveToCookies()
-				tsk.tasksController.checkUrgency()
 				tsk.view.renderAllTasks()
 			}
 			tsk.tasksController.changed = false
@@ -249,6 +254,7 @@ var $T = function (tsk) {
 		deadline: 0,
 		veryUrgent: false,
 		history: [],
+		obsolete: false,
 		addHistoryRecord: function (name){
 			tsk.tasksController.changed = true
 			if (!name) throw 'task object : .addHistoryRecord() name argument coers to false'

@@ -111,6 +111,9 @@ button {
 .green {
 	background-color: green;
 }
+.grey {
+	background-color: grey;
+}
 
 .blinking {
 	animation: blinking 5s infinite;
