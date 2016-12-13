@@ -11,8 +11,9 @@ input {
 
 button {
 	margin: 10px;
-	background-color: #8abe79;
+	background-color: #43b712;
 	border-style: none;
+	border-radius: 10px;
 	padding: 5px;
 	color: white;
 	font-size: 20px;
@@ -75,7 +76,13 @@ button {
 	color: grey;
 }
 /*---------------------------------TASKS VIEW---------------------------------*/
-
+.addingBtn {
+	transition-duration: 1s;
+}
+.addingBtn:hover {
+	transform: rotate(45deg);
+	transition-duration: 1s;
+}
 #taskerPanel {
 	display: flex;
 	flex-wrap: wrap;
@@ -89,7 +96,7 @@ button {
 	padding: 10px;
 	width: 40%;
 	height: 40%;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(255,255,255,0.7);
 	margin: 4%;
 	margin: 5px;
 	flex-wrap: wrap;
@@ -100,16 +107,16 @@ button {
 }
 
 .red {
-	background-color: red;
+	background-color: #C81434;
 }
 .orange {
-	background-color: orange;
+	background-color: #F17389;
 }
 .yellow {
-	background-color: yellow;
+	background-color: #9ECB14;
 }
 .green {
-	background-color: green;
+	background-color: #43B712;
 }
 .grey {
 	background-color: grey;
@@ -123,12 +130,16 @@ button {
 	margin: 2px;
 	padding: 5px;
 	align-items: center;
+	border-color: rgba(0, 0, 0, 0.1);
+	border-style: solid;
+	border-width: 2px;
 	border-radius: 6px;
 	color: rgba(0,0,0,0.8);
 	text-shadow: -1px 1px rgba(255,255,255,0.4);
 	font-weight: bold;
 	font-family: arial;
 	text-align: center;
+
 }
 
 .blinking {

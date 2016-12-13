@@ -72,7 +72,7 @@ var $T = function (tsk) {
 					self.changed = true
 					element.veryUrgent = true
 				}
-				if (hoursToDeadline < 0) {
+				if (hoursToDeadline < 0 && !element.obsolete) {
 					self.changed = true
 					element.obsolete = true
 				}
