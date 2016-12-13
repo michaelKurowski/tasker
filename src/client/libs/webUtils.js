@@ -8,7 +8,30 @@ window.onload = function () {
 		declareInputField(element)
 	})
 }
+/*
+	Response handler is an object that holds various functions for different statuses of request i.e.
+	{
+		200: function (responseText) {console.log(responseText, 'succesfull')},
+		404: function (responseText) {console.log('Not found :(')}
+	}
 
+	data is just a plain string
+*/
+function ajax(data, responseHandlerObject, header) {
+	header = header || 'json/text'
+	var request = new XMLHttpRequest()
+	request.onreadystatechange = function () {
+		if (request.readyState === 4) {
+			if (responseHandlerObject[request.status]) {
+				responseHandlerObject[request.status](request.responseText)
+			} else {
+				console.log('Not defined response', request)
+			}
+		}
+	}
+	request.setRequestHeader(header)
+	request.send(data)
+}
 
 function declareInputField(htmlElement) {
 	htmlElement.style.color = 'silver'
