@@ -1,0 +1,21 @@
+{
+  "name": "tasker",
+  "version": "1.0.0",
+  "description": "Server for tasker tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelKurowski/tasker/tree/master/src"
+  },
+  "keywords": [
+    "tasker",
+    "server",
+    "time",
+    "management"
+  ],
+  "author": "Michael Kurowski",
+  "license": "ISC"
+}
