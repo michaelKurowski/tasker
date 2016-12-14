@@ -1,5 +1,6 @@
 
 const cfg = require('./config.json')
+const taskerVersion = require('./package.json').version
 const $T = Object.assign( {},
 	require('./init.js')
 )
@@ -18,5 +19,5 @@ Promise.all([
 	$T.connectToDb(cfg.mongoDbUrl),
 	$T.startHttpServer(cfg.httpListeningPort, handleRequest)
 ]).then(
-	val => console.log('Promises done')
+	val => console.log(`Tasker ${taskerVersion} server is running`)
 )
