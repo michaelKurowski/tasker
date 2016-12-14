@@ -17,9 +17,10 @@ window.onload = function () {
 
 	data is just a plain string
 */
-function ajax(data, responseHandlerObject, header) {
-	header = header || 'json/text'
+function ajax(data, responseHandlerObject, address, method) {
+	method = method || 'GET'
 	var request = new XMLHttpRequest()
+	request.open(method, address, true)
 	request.onreadystatechange = function () {
 		if (request.readyState === 4) {
 			if (responseHandlerObject[request.status]) {
@@ -29,7 +30,7 @@ function ajax(data, responseHandlerObject, header) {
 			}
 		}
 	}
-	request.setRequestHeader(header)
+	request.setRequestHeader('content-type', 'json/text')
 	request.send(data)
 }
 

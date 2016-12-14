@@ -17,5 +17,8 @@
     "management"
   ],
   "author": "Michael Kurowski",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.2.16"
+  }
 }

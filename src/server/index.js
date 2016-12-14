@@ -1,19 +1,21 @@
 //Lets require/import the HTTP module
-const http = require('http');
-const cfg = require('./config.json');
-//Lets define a port we want to listen to
-console.log(cfg)
+const cfg = require('./config.json')
 
+const $T = Object.assign( {},
+	require('./init.js')
+)
+console.log($T)
 //We need a function which handles requests and send response
 function handleRequest(req, res){
 	console.log(
 		req
 	)
+	res.setHeader('Access-Control-Allow-Origin', 'null')
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+	res.setHeader('Access-Control-Allow-Credentials', true)
     res.end('It Works!! Path Hit: ' + req.url);
 }
 
-//Create a server
-const server = http.createServer(handleRequest);
-
-//Lets start our server
-server.listen(cfg.listeningPort, () => console.log(`Listening on: http://localhost:${cfg.listeningPort}`))
+$T.connectToDb(cfg.mongoDbUrl)
+$T.startHttpServer(cfg.httpListeningPort, handleRequest)

@@ -1,3 +1,4 @@
 {
-	"listeningPort": 8000
+	"httpListeningPort": 8000,
+	"mongoDbUrl": "mongodb://127.0.0.1:27017/test"
 }
