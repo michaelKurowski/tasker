@@ -3,7 +3,7 @@ const assert = require('assert')
 const http = require('http')
 
 module.exports = {
-	//Connects to DB, returns promise with db connection object
+	//Connects to DB, returns promise with db connection objecta
 	connectToDb(url, username, password) {
 		console.log('Connecting to MongoDB server...')
 		return new Promise( (resolve, reject) => {
