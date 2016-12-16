@@ -19,6 +19,7 @@
   "author": "Michael Kurowski",
   "license": "ISC",
   "dependencies": {
+    "email-templates": "^2.5.4",
     "mongodb": "^2.2.16"
   }
 }
