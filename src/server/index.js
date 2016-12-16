@@ -52,7 +52,7 @@ function handleRequest(req, res, db){
 				console.log('An error occured during parsing received body:', body)
 			}
 			if ($T.controllers[requestAction]) {
-				$T.controllers[requestAction](req, res, db, body)
+				$T.controllers[requestAction](req, res, db, parsedBody)
 			} else {
 				res.end('Undefined action')
 			}
