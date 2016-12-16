@@ -38,7 +38,7 @@ function handleRequest(req, res, db){
 	req.on(
 		'error',
 		err => console.log('Ann error occured during receiving request body:', err)
-	).on (
+	).on(
 		'data',
 		chunk => body += chunk
 	).on(
