@@ -30,21 +30,8 @@ module.exports = {
 				}).toArray()
 				.then( queryResults => {
 					//If there are no users fullfiling criteri then  add the user to the db
-					if (queryResults.length === 0) {
-						usersDb.insert({
-								username: data.username,
-								password: data.password,
-								email: data.email
-							},
-							{w: 1}
-						).then( insertResults => {
-							res.end(`User ${data.username} inserted`)
-							console.log(`User ${data.username} inserted`)
-						})
-					} else {
-						console.log('Collision')
-						res.end('DB collision')
-					}
+					//TODO: Move obligation of collision check to MongoDB
+					insertUser(usersDb, data, queryResults, res)
 				})
 			}
 			res.end('Sign up')
@@ -58,5 +45,23 @@ module.exports = {
 		load(req, res, db, data) {
 			res.end('Load')
 		}
+	}
+}
+
+function insertUser(collection, userObj, queryResults, res) {
+	if (queryResults.length === 0) {
+		usersDb.insert({
+				username: data.username,
+				password: data.password,
+				email: data.email
+			},
+			{w: 1}
+		).then( insertResults => {
+			res.end(`User ${data.username} inserted`)
+			console.log(`User ${data.username} inserted`)
+		})
+	} else {
+		console.log('Collision')
+		res.end('DB collision')
 	}
 }
