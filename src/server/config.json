@@ -7,6 +7,10 @@
 			{
 				"header": "Access-Control-Allow-Origin",
 				"value": "null"
+			},
+			{
+				"header": "Access-Control-Allow-Headers",
+				"value": "Origin, X-Requested-With, Content-Type, Accept"
 			}
 		],
 		"productionInstance": [

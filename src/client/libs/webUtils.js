@@ -18,7 +18,7 @@ window.onload = function () {
 	data is just a plain string
 */
 function ajax(data, responseHandlerObject, address, method) {
-	method = method || 'GET'
+	method = method || 'POST'
 	var request = new XMLHttpRequest()
 	request.open(method, address, true)
 	request.onreadystatechange = function () {

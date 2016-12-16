@@ -1,4 +1,4 @@
-
+"use strict"
 const cfg = require('./config.json')
 const taskerVersion = require('./package.json').version
 const $T = Object.assign( {},
@@ -6,25 +6,57 @@ const $T = Object.assign( {},
 	require('./controllers.js')
 )
 const instanceType = (cfg.devInstance) ? 'developerInstance' : 'productionInstance'
+$T.dbConnection
 
-function handleRequest(req, res){
+
+
+
+$T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
+
+	$T.startHttpServer(
+		cfg.httpListeningPort,
+		(req, res) => handleRequest(req, res, dbConnectionObject)
+	).then( httpServer => {
+		console.log(`Tasker ${taskerVersion} server is running.`)
+		//console.log(`MongoDB Object:`, dbConnectionObject.collection('test', function(err, collection) {}))
+	})
+})
+
+
+
+
+
+function handleRequest(req, res, db){
 	//Extracts slice of path after '/' in request url
 	const requestAction = req.url.slice(1)
-
+	let body = ''
 	//Sets response header according to config.json
-	cfg.httpServerResponsesHeader[instanceType]forEach(
+	cfg.httpServerResponsesHeader[instanceType].forEach(
 		record => res.setHeader(record.header, record.value)
 	)
-	//Redirects to a proper controller
-	if ($T.controllers[requestAction]) {
-		$T.controllers[requestAction](req, res)
-	} else {
-		res.end('Undefined action')
-	}
+	//Gathering body from request
+	req.on(
+		'error',
+		err => console.log('Ann error occured during receiving request body:', err)
+	).on (
+		'data',
+		chunk => body += chunk
+	).on(
+		'end',
+		() => {
+			//Redirects to a proper controller
+			let parsedBody = ''
+			try {
+				parsedBody = JSON.parse(body)
+			} catch(err) {
+				console.log('An error occured during parsing received body:', body)
+			}
+			if ($T.controllers[requestAction]) {
+				$T.controllers[requestAction](req, res, db, body)
+			} else {
+				res.end('Undefined action')
+			}
+		}
+	)
+
 }
-Promise.all([
-	$T.connectToDb(cfg.mongoDbUrl),
-	$T.startHttpServer(cfg.httpListeningPort, handleRequest)
-]).then(
-	val => console.log(`Tasker ${taskerVersion} server is running.`, val)
-)
