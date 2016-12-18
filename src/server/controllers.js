@@ -17,21 +17,22 @@ module.exports = {
 		},
 		signUp(req, res, db, data) {
 			console.log('signUp data', data)
-
 			//console.log('single data', data)
 			if (data.username && data.password && data.email) {
-				console.log('all data received')
-				const usersDb = db.collection('users')
-				usersDb.find({
-					$or: [
-						{username: data.username},
-						{email: data.email}
-					]
-				}).toArray()
-				.then( queryResults => {
-					//If there are no users fullfiling criteri then  add the user to the db
-					//TODO: Move obligation of collision check to MongoDB
-					insertUser(usersDb, data, queryResults, res)
+				const query = db.collection('users').insert({
+						username: data.username,
+						password: data.password,
+						email: data.email
+					},
+					{w: 1}
+				)
+				query.catch( insertErr => {
+					console.log(insertErr)
+					res.end(JSON.stringify(insertErr))
+				})
+				query.then( insertResults => {
+					res.end(`User ${data.username} inserted`)
+					console.log(`User ${data.username} inserted`)
 				})
 			}
 			res.end('Sign up')
