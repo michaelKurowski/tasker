@@ -2,18 +2,33 @@
 module.exports = {
 	controllers: {
 		login(req, res, db, data) {
-			let testDocs = [
-				{"username": "Byamarro1", "email": "Byamarro@gmail.com", "password": "dupa"},
-				{"username": "Byamarro2", "email": "Byamarro@gmail.com", "password": "dupa"},
-			]
-			res.end(JSON.stringify(data))
-
-			db.collection('users').insert(testDocs, {w: 1}, (err, result) => {
-				console.log(result)
-				if (!err) res.end('Login', result)
-				res.end('Login', err)
-			})
-
+			if (data.username || data.email) {
+				const queryPromise = new Promise( (resolve, reject) => {
+					db.collection('users').find({
+							username: data.username,
+							password: data.password
+						},
+						{w: 1},
+						(err, result) => {
+							//console.log(result)
+							return err ? reject(err) : resolve(result)
+						}
+					)
+				})
+				//console.log('Promise ', queryPromise)
+				queryPromise.catch( findErr => {
+					console.log('login: reject')
+					res.end(  JSON.stringify(insertErr)  )
+				})
+				queryPromise.then(findResults => {
+					findResults.toArray( (err, result) => {
+						console.log(result)
+						res.end(  JSON.stringify(result)  )
+					})
+				})
+			} else {
+				res.end('No data')
+			}
 		},
 		signUp(req, res, db, data) {
 			console.log('signUp data', data)
@@ -28,14 +43,15 @@ module.exports = {
 				)
 				query.catch( insertErr => {
 					console.log(insertErr)
-					res.end(JSON.stringify(insertErr))
+					res.end(  JSON.stringify(insertErr)  )
 				})
 				query.then( insertResults => {
 					res.end(`User ${data.username} inserted`)
 					console.log(`User ${data.username} inserted`)
 				})
+			} else {
+				res.end('No data')
 			}
-			res.end('Sign up')
 		},
 		logout(req, res, db, data) {
 			res.end('Logout')

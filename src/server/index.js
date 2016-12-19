@@ -35,6 +35,7 @@ function handleRequest(req, res, db){
 		record => res.setHeader(record.header, record.value)
 	)
 	//Gathering body from request
+	//console.log(':::::::::::::::::::::::::::::::::::::::::::::::', req)
 	req.on(
 		'error',
 		err => console.log('Ann error occured during receiving request body:', err)
@@ -46,10 +47,11 @@ function handleRequest(req, res, db){
 		() => {
 			//Redirects to a proper controller
 			let parsedBody = ''
+			console.log(body, requestAction)
 			try {
 				parsedBody = JSON.parse(body)
 			} catch(err) {
-				console.log('An error occured during parsing received body:', body)
+				console.log('An error occured during parsing received body:', body, err)
 			}
 			if ($T.controllers[requestAction]) {
 				$T.controllers[requestAction](req, res, db, parsedBody)
