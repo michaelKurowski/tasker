@@ -101,9 +101,11 @@ button {
 	margin: 5px;
 	flex-wrap: wrap;
 	justify-content: center;
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
 	overflow-y: scroll;
 
+}
+.shadow {
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
 }
 
 .red {
