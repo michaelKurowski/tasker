@@ -47,7 +47,6 @@ function handleRequest(req, res, db){
 		() => {
 			//Redirects to a proper controller
 			let parsedBody = ''
-			console.log(body, requestAction)
 			try {
 				parsedBody = JSON.parse(body)
 			} catch(err) {
