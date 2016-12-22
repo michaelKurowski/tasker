@@ -23,6 +23,7 @@ button {
 	background-color: white;
 	padding: 20px;
     animation-duration: 1s;
+	z-index: 1;
 }
 .flex {
 	display: flex;

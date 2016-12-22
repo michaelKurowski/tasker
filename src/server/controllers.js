@@ -2,7 +2,8 @@
 module.exports = {
 	controllers: {
 		login(req, res, db, data) {
-			if (data.username || data.email) {
+			if (data.username || data.password) {
+
 				const queryPromise = new Promise( (resolve, reject) => {
 					db.collection('users').find({
 							username: data.username,
@@ -15,14 +16,16 @@ module.exports = {
 						}
 					)
 				})
-				//console.log('Promise ', queryPromise)
 				queryPromise.catch( findErr => {
-					console.log('login: reject')
+
+
 					res.end(  JSON.stringify(insertErr)  )
 				})
 				queryPromise.then(findResults => {
 					findResults.toArray( (err, result) => {
-						console.log(result)
+						console.log(`${data.username} logged in.`)
+						//console.log(result)
+						console.log(req)
 						res.end(  JSON.stringify(result)  )
 					})
 				})
