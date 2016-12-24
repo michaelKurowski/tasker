@@ -285,8 +285,19 @@ var $T = function (tsk) {
 	server.load = function () {
 
 	}
-	server.login = function () {
+	server.login = function (username, password, address) {
+		let data = {
+			username: username,
+			password: password,
+		}
+		if ($T.server.token) data.token = $T.server.token
+		ajax(JSON.stringify(data), {
+			200: function (response) {
+				$T.server.token = JSON.parse(response).token
+				console.log(response)
+			}
 
+		}, 'http://localhost:8000/' + login)
 	}
 	server.logout = function () {
 
@@ -315,6 +326,23 @@ var $T = function (tsk) {
 		var hour = (date.getHours() < 10) ? '0'+(date.getHours()-1) : date.getHours()-1
 		var minute = (date.getMinutes() < 10) ? '0'+date.getMinutes() : date.getMinutes()
 		return date.getFullYear() + '-' + month + '-' + day + 'T' + hour + ':' + minute
+	}
+
+	function ajax(data, responseHandlerObject, address, method) {
+		method = method || 'POST'
+		var request = new XMLHttpRequest()
+		request.open(method, address, true)
+		request.onreadystatechange = function () {
+			if (request.readyState === 4) {
+				if (responseHandlerObject[request.status]) {
+					responseHandlerObject[request.status](request.responseText)
+				} else {
+					console.log('Not defined response', request)
+				}
+			}
+		}
+		request.setRequestHeader('content-type', 'json/text')
+		request.send(data)
 	}
 
 	return tsk
