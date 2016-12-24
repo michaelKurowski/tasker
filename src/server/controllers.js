@@ -2,11 +2,11 @@
 module.exports = {
 	controllers: {
 		login(req, res, db, data, sessionsManagement) {
+			//console.log(sessionsManagement.sessions)
 			if (sessionsManagement.getIdFromSession(data.token)) {
 				return res.end('Already logged in')
 			}
 			if (data.username && data.password) {
-
 				const queryPromise = new Promise( (resolve, reject) => {
 					db.collection('users').find({
 							username: data.username,
@@ -25,11 +25,11 @@ module.exports = {
 				queryPromise.then(findResults => {
 					findResults.toArray( (err, result) => {
 						if (result.length !== 0) {
-							console.log(`${data.username} logged in using ${data.password}.`)
-							const token = sessionsManagement.spawnSession(data.username, data.password, result[0])
+							//console.log(`${data.username} logged in using ${data.password}.`)
+							const token = sessionsManagement.spawnSession(data.username, data.password, result[0]._id)
 							res.end(  token  )
 						} else {
-							console.log(`${data.username} tried to log in using ${data.password}.`)
+							//console.log(`${data.username} tried to log in using ${data.password}.`)
 							res.end('Incorrect credentials')
 						}
 					})
