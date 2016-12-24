@@ -80,6 +80,7 @@ module.exports = {
 		},
 		load(req, res, db, data) {
 			if (data.username || data.password) {
+
 				const queryPromise = new Promise( (resolve, reject) => {
 					db.collection('users').find({
 							username: data.username
