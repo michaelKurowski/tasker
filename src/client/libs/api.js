@@ -10,6 +10,7 @@ function dropLog () {
 }
 
 var $T = function (tsk) {
+	var server = {}
 	var screens = {}
 	var GUIelems = tsk.GUIelems = {}
 	GUIelems.tasks = {}
@@ -278,6 +279,21 @@ var $T = function (tsk) {
 		timestamp: 0
 	}
 
+	server.save = function () {
+
+	}
+	server.load = function () {
+
+	}
+	server.login = function () {
+
+	}
+	server.logout = function () {
+
+	}
+	server.signUp = function () {
+
+	}
 	function createTask(title, urgency, importance, deadline) {
 		deadline = deadline || 0
 		var newTask = Object.create(taskProto)
