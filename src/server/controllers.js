@@ -4,6 +4,7 @@ module.exports = {
 		login(req, res, db, data, sessionsManagement) {
 			//console.log(sessionsManagement.sessions)
 			if (sessionsManagement.getIdFromSession(data.token)) {
+				res.statusCode = 204
 				return res.end('Already logged in')
 			}
 			if (data.username && data.password) {
@@ -30,7 +31,8 @@ module.exports = {
 							res.end(  JSON.stringify({token}))
 						} else {
 							//console.log(`${data.username} tried to log in using ${data.password}.`)
-							res.end('Incorrect credentials')
+							res.statusCode = 401
+							res.end(JSON.stringify({}))
 						}
 					})
 				})
