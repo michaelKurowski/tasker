@@ -7,7 +7,7 @@ const $T = Object.assign( {},
 )
 const $sM = require('./sessions.js')
 const instanceType = (cfg.devInstance) ? 'developerInstance' : 'productionInstance'
-
+//const bcrypt = require('bcrypt')
 
 
 $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
@@ -19,6 +19,8 @@ $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
 		//console.log(`MongoDB Object:`, dbConnectionObject.collection('test', function(err, collection) {}))
 	})
 })
+
+
 
 
 

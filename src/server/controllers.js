@@ -2,7 +2,6 @@
 module.exports = {
 	controllers: {
 		login(req, res, db, data, sessionsManagement) {
-			console.log()
 			if (sessionsManagement.getIdFromSession(data.token)) {
 				return res.end('Already logged in')
 			}
@@ -25,16 +24,14 @@ module.exports = {
 				})
 				queryPromise.then(findResults => {
 					findResults.toArray( (err, result) => {
-						console.log(`${data.username} logged in using ${data.password}.`)
-						//console.log(result)
-						//console.log(req)
 						if (result.length !== 0) {
+							console.log(`${data.username} logged in using ${data.password}.`)
 							const token = sessionsManagement.spawnSession(data.username, data.password, result[0])
-							res.end(  JSON.stringify(result) + '. . . ' + token  )
+							res.end(  token  )
 						} else {
-							res.end(  'Incorrect credentials'  )
+							console.log(`${data.username} tried to log in using ${data.password}.`)
+							res.end('Incorrect credentials')
 						}
-
 					})
 				})
 			} else {
@@ -66,6 +63,7 @@ module.exports = {
 			}
 		},
 		logout(req, res, db, data, $sM) {
+			$sM.deleteSession(data.token)
 			res.end('Logout')
 		},
 		save(req, res, db, data, sessionsManagement) {

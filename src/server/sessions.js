@@ -1,9 +1,11 @@
 'use strict'
 const cfg = require('./config.json')
+const bcrypt = require('bcrypt')
 module.exports = {
 	sessions: new WeakMap(),
+	salt: bcrypt.genSaltSync(10),
 	spawnSession(username, password, id) {
-		const token = username + password + new Date().getTime()
+		const token = bcrypt.hashSync(username + password + new Date().getTime(), this.salt)
 		this.sessions.set({token}, {
 			id,
 			expirationDate: new Date().getTime() + cfg.sessionsExpiration
@@ -27,5 +29,9 @@ module.exports = {
 		}
 		this.sessions.delete({token})
 		return false
+	},
+	deleteSession(token) {
+		this.sessions.delete({token})
+		return true
 	}
 }
