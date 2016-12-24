@@ -27,7 +27,7 @@ module.exports = {
 						if (result.length !== 0) {
 							//console.log(`${data.username} logged in using ${data.password}.`)
 							const token = sessionsManagement.spawnSession(data.username, data.password, result[0]._id)
-							res.end(  token  )
+							res.end(  JSON.stringify({token}))
 						} else {
 							//console.log(`${data.username} tried to log in using ${data.password}.`)
 							res.end('Incorrect credentials')

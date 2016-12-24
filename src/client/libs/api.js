@@ -10,7 +10,7 @@ function dropLog () {
 }
 
 var $T = function (tsk) {
-	var server = {}
+	var server = tsk.server = {}
 	var screens = {}
 	var GUIelems = tsk.GUIelems = {}
 	GUIelems.tasks = {}
@@ -293,11 +293,11 @@ var $T = function (tsk) {
 		if ($T.server.token) data.token = $T.server.token
 		ajax(JSON.stringify(data), {
 			200: function (response) {
+				console.log(response, ' ::: for ::: ', JSON.stringify(data))
 				$T.server.token = JSON.parse(response).token
-				console.log(response)
 			}
 
-		}, 'http://localhost:8000/' + login)
+		}, 'http://localhost:8000/' + 'login')
 	}
 	server.logout = function () {
 
