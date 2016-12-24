@@ -5,14 +5,12 @@ const $T = Object.assign( {},
 	require('./init.js'),
 	require('./controllers.js')
 )
+const $sM = require('./sessions.js')
 const instanceType = (cfg.devInstance) ? 'developerInstance' : 'productionInstance'
-$T.dbConnection
-
 
 
 
 $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
-
 	$T.startHttpServer(
 		cfg.httpListeningPort,
 		(req, res) => handleRequest(req, res, dbConnectionObject)
@@ -52,8 +50,9 @@ function handleRequest(req, res, db){
 			} catch(err) {
 				console.log('An error occured during parsing received body:', body, err)
 			}
+
 			if ($T.controllers[requestAction]) {
-				$T.controllers[requestAction](req, res, db, parsedBody)
+				$T.controllers[requestAction](req, res, db, parsedBody, $sM)
 			} else {
 				res.end('Undefined action')
 			}

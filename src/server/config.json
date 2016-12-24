@@ -19,5 +19,6 @@
 				"value": "localhost"
 			}
 		]
-	}
+	},
+	"sessionsExpiration": 18000
 }

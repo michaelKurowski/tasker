@@ -1,15 +1,19 @@
 'use strict'
 module.exports = {
 	controllers: {
-		login(req, res, db, data) {
-			if (data.username || data.password) {
+		login(req, res, db, data, sessionsManagement) {
+			console.log()
+			if (sessionsManagement.getIdFromSession(data.token)) {
+				return res.end('Already logged in')
+			}
+			if (data.username && data.password) {
 
 				const queryPromise = new Promise( (resolve, reject) => {
 					db.collection('users').find({
 							username: data.username,
 							password: data.password
 						},
-						{w: 1},
+						{_id: 1},
 						(err, result) => {
 							//console.log(result)
 							return err ? reject(err) : resolve(result)
@@ -17,16 +21,20 @@ module.exports = {
 					)
 				})
 				queryPromise.catch( findErr => {
-
-
 					res.end(  JSON.stringify(insertErr)  )
 				})
 				queryPromise.then(findResults => {
 					findResults.toArray( (err, result) => {
-						console.log(`${data.username} logged in.`)
+						console.log(`${data.username} logged in using ${data.password}.`)
 						//console.log(result)
-						console.log(req)
-						res.end(  JSON.stringify(result)  )
+						//console.log(req)
+						if (result.length !== 0) {
+							const token = sessionsManagement.spawnSession(data.username, data.password, result[0])
+							res.end(  JSON.stringify(result) + '. . . ' + token  )
+						} else {
+							res.end(  'Incorrect credentials'  )
+						}
+
 					})
 				})
 			} else {
@@ -57,10 +65,10 @@ module.exports = {
 				res.end('No data')
 			}
 		},
-		logout(req, res, db, data) {
+		logout(req, res, db, data, $sM) {
 			res.end('Logout')
 		},
-		save(req, res, db, data) {
+		save(req, res, db, data, sessionsManagement) {
 			console.log('data: ', data.tasks, data.username)
 			if (data.tasks && data.username) {
 				const query = db.collection('users').update(
@@ -78,7 +86,7 @@ module.exports = {
 			}
 			res.end('Save')
 		},
-		load(req, res, db, data) {
+		load(req, res, db, data, sessionsManagement) {
 			if (data.username || data.password) {
 
 				const queryPromise = new Promise( (resolve, reject) => {
