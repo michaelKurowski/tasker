@@ -293,8 +293,15 @@ var $T = function (tsk) {
 		if ($T.server.token) data.token = $T.server.token
 		ajax(JSON.stringify(data), {
 			200: function (response) {
-				console.log(response, ' ::: for ::: ', JSON.stringify(data))
+				var token = JSON.parse(response).token
+				console.log('Token received: ', token)
 				$T.server.token = JSON.parse(response).token
+			},
+			204: function () {
+				console.log('Already logged in')
+			},
+			401: function () {
+				console.log('Wrong credentials')
 			}
 
 		}, 'http://localhost:8000/' + 'login')
