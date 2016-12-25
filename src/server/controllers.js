@@ -96,8 +96,13 @@ module.exports = {
 			res.end('{}')
 		},
 		load(req, res, db, data, sessionsManagement) {
-			if (data.username || data.password) {
-
+			const session = sessionsManagement.getIdFromSession(data.token)
+			if (!session) {
+				res.statusCode = 401
+				res.end('{}')
+				return false
+			}
+			if (session) {
 				const queryPromise = new Promise( (resolve, reject) => {
 					db.collection('users').find({
 							username: data.username
