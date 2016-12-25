@@ -280,22 +280,45 @@ var $T = function (tsk) {
 	}
 
 	server.save = function () {
+		if (!$T.server.token || !$T.server.username) {
+			throw '$T.server.login: No username or password availible'
+		}
+		let data = {
+			token: token,
+			tasks: $T.tasksController.list
+		}
+		ajax(JSON.stringify(data), {
+			200: function (response) {
+				console.log('Data saved')
+			},
+			412: function () {
+				console.log('Unauthorized')
+			},
+			401: function () {
+				console.log('Missing data')
+			}
 
+		}, 'http://localhost:8000/' + 'save')
 	}
 	server.load = function () {
 
 	}
 	server.login = function (username, password, address) {
+		if (!username || !password) {
+			throw '$T.server.login: No username or password passed'
+		}
 		let data = {
 			username: username,
 			password: password,
 		}
+
 		if ($T.server.token) data.token = $T.server.token
 		ajax(JSON.stringify(data), {
 			200: function (response) {
 				var token = JSON.parse(response).token
 				console.log('Token received: ', token)
 				$T.server.token = JSON.parse(response).token
+				$T.server.username = username
 			},
 			204: function () {
 				console.log('Already logged in')
