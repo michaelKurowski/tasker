@@ -9,7 +9,7 @@ function dropLog () {
 	delete link;
 }
 
-var $T = function (tsk) {
+var $T = function (tsk, serverAddress) {
 	var server = tsk.server = {}
 	var screens = {}
 	var GUIelems = tsk.GUIelems = {}
@@ -298,7 +298,7 @@ var $T = function (tsk) {
 				console.log('Missing data')
 			}
 
-		}, 'http://localhost:8000/' + 'save')
+		}, serverAddress + '/save')
 	}
 	server.load = function () {
 
@@ -327,7 +327,7 @@ var $T = function (tsk) {
 				console.log('Wrong credentials')
 			}
 
-		}, 'http://localhost:8000/' + 'login')
+		}, serverAddress + '/login')
 	}
 	server.logout = function () {
 
@@ -376,4 +376,4 @@ var $T = function (tsk) {
 	}
 
 	return tsk
-}($T || {})
+}($T || {}, config.serverAddress)
