@@ -69,7 +69,14 @@ module.exports = {
 			res.end('Logout')
 		},
 		save(req, res, db, data, sessionsManagement) {
-			console.log('data: ', data.tasks, data.username)
+			const session = sessionsManagement.getIdFromSession(data.token)
+			//console.log('data: ', data.tasks, data.username)
+
+			if (!session) {
+				res.statusCode = 401
+				res.end('{}')
+				return false
+			}
 			if (data.tasks && data.username) {
 				const query = db.collection('users').update(
 					{username: data.username},
@@ -77,14 +84,16 @@ module.exports = {
 				)
 				query.catch( insertErr => {
 					console.log('err:', insertErr)
+					res.statusCode = 412
 					res.end(  JSON.stringify(insertErr)  )
 				})
 				query.then( insertResults => {
-					res.end(`User ${data.username} updated`)
+					res.end(`{}`)
 					console.log(`User ${data.username} updated`)
 				})
 			}
-			res.end('Save')
+			res.statusCode = 412
+			res.end('{}')
 		},
 		load(req, res, db, data, sessionsManagement) {
 			if (data.username || data.password) {
