@@ -12,5 +12,6 @@ var config = {
 		'20% of tasks, take 80% of time. Don\'t try to create illusion of an effective day by fullfiling big amount of small tasks.',
 		'Keep fullfiling conditions of your tasks measureable.',
 		'Tell someone about your task, it will be harder for you to ignore it if you\'ll have to tell someone that you didn\'t succeed.'
-	]
+	],
+	serverAddress: 'http://localhost:8000'
 }
