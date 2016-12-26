@@ -96,8 +96,11 @@ module.exports = {
 			res.end('{}')
 		},
 		load(req, res, db, data, sessionsManagement) {
+			console.log('login: data received', data)
 			const session = sessionsManagement.getIdFromSession(data.token)
 			if (!session) {
+				console.log('login: NOT LOGGED IN', session)
+				//console.log(session)
 				res.statusCode = 401
 				res.end('{}')
 				return false

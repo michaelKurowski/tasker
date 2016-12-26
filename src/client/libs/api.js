@@ -281,10 +281,10 @@ var $T = function (tsk, serverAddress) {
 
 	server.save = function () {
 		if (!$T.server.token || !$T.server.username) {
-			throw '$T.server.login: No username or password availible'
+			throw '$T.server.save: Not logged in'
 		}
-		let data = {
-			token: token,
+		var data = {
+			token: $T.server.token,
 			tasks: $T.tasksController.list
 		}
 		ajax(JSON.stringify(data), {
@@ -301,13 +301,51 @@ var $T = function (tsk, serverAddress) {
 		}, serverAddress + '/save')
 	}
 	server.load = function () {
+		console.log($T.server.token)
+		if (!$T.server.token || !server.username) {
+			throw '$T.server.save: Not logged in'
+		}
+		var data = {
+			token: $T.server.token
+		}
+		console.log(JSON.stringify(data))
+		/*
+		ajax(JSON.stringify(data), {
+			200: function (response) {
+				console.log('response', response)
+				$T.tasksController.list = JSON.parse(response)
+				console.log('Data loaded')
+			},
+			412: function () {
+				console.log('Unauthorized')
+			},
+			401: function () {
+				console.log('Missing data')
+			}
 
+		}, serverAddress + '/load')*/
+		console.log(serverAddress + '/login', serverAddress + '/load')
+		ajax(JSON.stringify(data), {
+			200: function (response) {
+				var token = JSON.parse(response).token
+				console.log('Token received: ', token)
+				$T.server.token = token
+				$T.server.username = username
+			},
+			204: function () {
+				console.log('Already logged in')
+			},
+			401: function () {
+				console.log('Wrong credentials')
+			}
+
+		}, serverAddress + '/load')
 	}
 	server.login = function (username, password, address) {
 		if (!username || !password) {
 			throw '$T.server.login: No username or password passed'
 		}
-		let data = {
+		var data = {
 			username: username,
 			password: password,
 		}
@@ -317,7 +355,7 @@ var $T = function (tsk, serverAddress) {
 			200: function (response) {
 				var token = JSON.parse(response).token
 				console.log('Token received: ', token)
-				$T.server.token = JSON.parse(response).token
+				$T.server.token = token
 				$T.server.username = username
 			},
 			204: function () {
@@ -372,6 +410,7 @@ var $T = function (tsk, serverAddress) {
 			}
 		}
 		request.setRequestHeader('content-type', 'json/text')
+		console.log(data)
 		request.send(data)
 	}
 

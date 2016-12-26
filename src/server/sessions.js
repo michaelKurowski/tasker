@@ -2,7 +2,7 @@
 const cfg = require('./config.json')
 const bcrypt = require('bcrypt')
 module.exports = {
-	sessions: [],
+	sessions: {},
 	salt: bcrypt.genSaltSync(10),
 	spawnSession(username, password, id) {
 		const token = bcrypt.hashSync(username + password + new Date().getTime(), this.salt)
@@ -16,8 +16,8 @@ module.exports = {
 	},
 	getIdFromSession(token) {
 		const session = this.sessions[token]
-		console.log('whole list ', this.sessions)
-		console.log('getting results ',token, 'results:', session)
+		console.log('sessions.getIdFromSession(token): whole list ', this.sessions)
+		console.log('sessions.getIdFromSession(token): getting results ',token, 'results:', session)
 		if (session && session.expirationDate > new Date().getTime()) {
 			return token
 		}
