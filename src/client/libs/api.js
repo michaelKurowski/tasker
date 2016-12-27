@@ -243,6 +243,10 @@ var $T = function (tsk, serverAddress) {
 			})
 		}, 60000)
 		tsk.view.renderAllTasks()
+		setInterval(function () {
+			tsk.tasksController = true
+		}, 18000)
+		
 	}
 
 
