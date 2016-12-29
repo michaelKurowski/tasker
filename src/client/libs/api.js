@@ -244,9 +244,9 @@ var $T = function (tsk, serverAddress) {
 		}, 60000)
 		tsk.view.renderAllTasks()
 		setInterval(function () {
-			tsk.tasksController = true
+			tsk.tasksController.changed = true
 		}, 18000)
-		
+
 	}
 
 
