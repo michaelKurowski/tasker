@@ -30,7 +30,7 @@ function ajax(data, responseHandlerObject, address, method) {
 			}
 		}
 	}
-	request.setRequestHeader('content-type', 'json/text')
+	//request.setRequestHeader('content-type', 'json/text')
 	request.send(data)
 }
 

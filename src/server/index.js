@@ -38,7 +38,10 @@ function handleRequest(req, res, db){
 	//console.log(':::::::::::::::::::::::::::::::::::::::::::::::', req)
 	req.on(
 		'error',
-		err => console.log('Ann error occured during receiving request body:', err)
+		err => {
+			console.log('Ann error occured during receiving request body:', err)
+			res.end('Undefined action')
+		}
 	).on(
 		'data',
 		chunk => body += chunk
@@ -46,6 +49,7 @@ function handleRequest(req, res, db){
 		'end',
 		() => {
 			//Redirects to a proper controller
+			console.log(body)
 			let parsedBody = ''
 			try {
 				parsedBody = JSON.parse(body)

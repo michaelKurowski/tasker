@@ -310,10 +310,12 @@ var $T = function (tsk, serverAddress) {
 			throw '$T.server.save: Not logged in'
 		}
 		var data = {
-			token: $T.server.token
+			token: $T.server.token,
+			username: server.username
+
 		}
 		console.log(JSON.stringify(data))
-		/*
+
 		ajax(JSON.stringify(data), {
 			200: function (response) {
 				console.log('response', response)
@@ -327,14 +329,15 @@ var $T = function (tsk, serverAddress) {
 				console.log('Missing data')
 			}
 
-		}, serverAddress + '/load')*/
+		}, serverAddress + '/load')
+		/*
 		console.log(serverAddress + '/login', serverAddress + '/load')
 		ajax(JSON.stringify(data), {
 			200: function (response) {
 				var token = JSON.parse(response).token
-				console.log('Token received: ', token)
-				$T.server.token = token
-				$T.server.username = username
+				console.log('response: ',JSON.parse(response))
+				//$T.server.token = token
+				//$T.server.username = username
 			},
 			204: function () {
 				console.log('Already logged in')
@@ -344,6 +347,7 @@ var $T = function (tsk, serverAddress) {
 			}
 
 		}, serverAddress + '/load')
+		*/
 	}
 	server.login = function (username, password, address) {
 		if (!username || !password) {

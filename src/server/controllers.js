@@ -96,12 +96,13 @@ module.exports = {
 			res.end('{}')
 		},
 		load(req, res, db, data, sessionsManagement) {
-			console.log('login: data received', data)
+			console.log('login: data received:', data)
 			const session = sessionsManagement.getIdFromSession(data.token)
 			if (!session) {
 				console.log('login: NOT LOGGED IN', session)
 				//console.log(session)
-				res.statusCode = 401
+				//TODO manage to set status code to 401 without breaking up a whole app
+				res.statusCode = 200
 				res.end('{}')
 				return false
 			}
@@ -122,7 +123,7 @@ module.exports = {
 				})
 				queryPromise.then(findResults => {
 					findResults.toArray( (err, result) => {
-						console.log(`${data.username} returned tasks.`, result)
+						console.log(`${JSON.stringify(data)} ${data.username} returned tasks.`, result)
 						//console.log(result)
 						res.end(  JSON.stringify(result[0].tasks)  )
 					})
