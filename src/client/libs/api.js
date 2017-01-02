@@ -319,7 +319,11 @@ var $T = function (tsk, serverAddress) {
 		ajax(JSON.stringify(data), {
 			200: function (response) {
 				console.log('response', response)
-				$T.tasksController.list = JSON.parse(response)
+				var recvObject = JSON.parse(response)
+				if (recvObject) {
+					$T.tasksController.list = recvObject
+					console.log('Error during data loading')
+				}
 				console.log('Data loaded')
 			},
 			412: function () {
