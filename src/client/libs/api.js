@@ -289,6 +289,7 @@ var $T = function (tsk, serverAddress) {
 		}
 		var data = {
 			token: $T.server.token,
+			username: server.username,
 			tasks: $T.tasksController.list
 		}
 		ajax(JSON.stringify(data), {
@@ -320,7 +321,7 @@ var $T = function (tsk, serverAddress) {
 			200: function (response) {
 				console.log('response', response)
 				var recvObject = JSON.parse(response)
-				if (recvObject) {
+				if (!recvObject) {
 					$T.tasksController.list = recvObject
 					console.log('Error during data loading')
 				}

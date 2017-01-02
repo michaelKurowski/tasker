@@ -73,7 +73,7 @@ module.exports = {
 			//console.log('data: ', data.tasks, data.username)
 
 			if (!session) {
-				res.statusCode = 401
+				//res.statusCode = 401
 				res.end('{}')
 				return false
 			}
