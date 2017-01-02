@@ -323,6 +323,7 @@ var $T = function (tsk, serverAddress) {
 				var recvObject = JSON.parse(response)
 				if (recvObject) {
 					$T.tasksController.list = recvObject
+					$T.tasksController.changed = true
 					console.log('Data loaded')
 				} else {
 					console.log('Error during data loading')
