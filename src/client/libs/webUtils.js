@@ -69,6 +69,8 @@ function toArray(hostObj){ //converts host object to array
 }
 
 function moveToScreen(actualScreen, nextScreen) {
+	actualScreen.className += " oneTimeAnim"
+	nextScreen.className += " oneTimeAnim"
 	actualScreen.style.animationName = "switchOut"
 	nextScreen.style.animationName = "switchIn"
 }

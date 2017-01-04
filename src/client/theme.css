@@ -176,6 +176,13 @@ button {
 	padding: 5px;
 
 }
+/*Anims*/
+.oneTimeAnim {
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+
 @keyframes blinking {
 	0%, 100% {box-shadow: 0px 0px 0px orange;}
 	50% {box-shadow: 0px 0px 20px orange;}

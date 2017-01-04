@@ -401,9 +401,7 @@ var $T = function (tsk, serverAddress) {
 		return newTask
 	}
 
-	function login() {
-		moveToScreen(screens.login, screens.tasker)
-	}
+
 	function toDateInput(date) {
 		var month = (date.getMonth() < 9) ? '0'+(date.getMonth()+1) : date.getMonth()+1
 		var day = (date.getDate() < 10) ? '0'+date.getDate() : date.getDate()
@@ -432,3 +430,6 @@ var $T = function (tsk, serverAddress) {
 
 	return tsk
 }($T || {}, config.serverAddress)
+function login() {
+	moveToScreen(document.getElementById('loginPanel'), document.getElementById('taskerPanel'))
+}
