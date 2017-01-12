@@ -196,10 +196,10 @@ var $T = function (tsk, serverAddress) {
 			var deadline = new Date(inputs[1].value).getTime()
 			console.log(new Date(deadline))
 			if (deadline < new Date().getTime()) {
-
 				console.log(deadline, new Date(), deadline.getTime() < new Date().getTime())
 				alert('You can not set past date as the deadline.')
-				return false
+				throw 'You can not set past date as the deadline.'
+				return true
 			}
 			switch (tsk.globals.currentlyAdding) {
 				case 'red':

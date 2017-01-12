@@ -69,8 +69,18 @@ function toArray(hostObj){ //converts host object to array
 }
 
 function moveToScreen(actualScreen, nextScreen) {
-	actualScreen.className += " oneTimeAnim"
-	nextScreen.className += " oneTimeAnim"
-	actualScreen.style.animationName = "switchOut"
-	nextScreen.style.animationName = "switchIn"
+	console.log(nextScreen.classList)
+	actualScreen.classList.add('oneTimeAnim')
+	console.log(actualScreen.classList)
+	nextScreen.classList.remove('hide')
+	console.log(actualScreen.classList)
+	nextScreen.classList.add('oneTimeAnim')
+	console.log(nextScreen.classList)
+	actualScreen.style.animationName = 'switchOut'
+	nextScreen.style.animationName = 'switchIn'
+	setTimeout( function () {
+		actualScreen.classList.add('hide')
+	}, 1000
+
+	)
 }
