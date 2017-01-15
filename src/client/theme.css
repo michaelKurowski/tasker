@@ -3,8 +3,16 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 	overflow: hidden;
-}
 
+}
+#panelsWrapper {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+
+}
 input {
 	margin: 10px;
 }

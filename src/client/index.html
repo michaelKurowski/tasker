@@ -10,66 +10,67 @@
 
 
 <body class="flex column flexJustifyCenter centerContent">
-	<div id="dataPickerPanel" class="guiPanel shadow" style="width: 20%;">
-		<form id="taskCreatorForm" action="">
-			<label class="pickerLabel">Title<input type="text" id="titlePicker" required></label><br>
-			<!--<span class="pickerLabel">Date:</span><input type="date" id="datePicker" required><br>-->
-			<label class="pickerLabel">Deadline:<input type="datetime-local" id="datePicker" required></label><br>
-			<!--<span class="pickerLabel">Hour:</span><input type="range" id="hourPicker" required>:<input type="text" id="minutePicker"><br>-->
-			<button type="submit" value="createAlert">Go</button>
-		</form>
-		<span class="tipOfTheDay">Keep your targets real</span>
+	<div id="panelsWrapper">
+		<div id="dataPickerPanel" class="guiPanel shadow" style="width: 20%;">
+			<form id="taskCreatorForm" action="">
+				<label class="pickerLabel">Title<input type="text" id="titlePicker" required></label><br>
+				<!--<span class="pickerLabel">Date:</span><input type="date" id="datePicker" required><br>-->
+				<label class="pickerLabel">Deadline:<input type="datetime-local" id="datePicker" required></label><br>
+				<!--<span class="pickerLabel">Hour:</span><input type="range" id="hourPicker" required>:<input type="text" id="minutePicker"><br>-->
+				<button type="submit" value="createAlert">Go</button>
+			</form>
+			<span class="tipOfTheDay">Keep your targets real</span>
+
+		</div>
+
+		<div id="loginPanel" class="guiPanel" style="width: 20%;">
+			<h1>Login page</h1>
+			<hr>
+			<form class="flex column" onsubmit="login(); return false;">
+				<input id="loginPanelUsername" type="text" class="inputField" value="Username"></input>
+				<input id="loginPanelPassword" type="text" class="inputField" value="Password"></input>
+				<button>Log in</button>
+			</form>
+		</div>
+
+
+		<div id="taskerPanel" class="hide guiPanel transparent width60 hiddenPanel">
+			<!--<input type="text" id="datepicker"> THIS IS HOW PIKADAY CALLENDAR LOOKS LIKE -->
+			<div  class="redAlerts tasksContainer shadow">
+
+				<div class="flex flexJustifyCenter smallMargin">
+					<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('red')" class="addingBtn"></img>
+				</div>
+				<div class="tasksList" id="redTasks">
+
+				</div>
+			</div>
+			<div class="orangeAlerts tasksContainer shadow">
+				<div class="flex flexJustifyCenter smallMargin">
+					<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('orange')" class="addingBtn"></img>
+				</div>
+				<div class="tasksList" id="orangeTasks">
+
+				</div>
+			</div>
+			<div class="yellowAlerts tasksContainer shadow">
+				<div class="flex flexJustifyCenter smallMargin">
+					<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('yellow')" class="addingBtn"></img>
+				</div>
+				<div class="tasksList" id="yellowTasks">
+
+				</div>
+			</div>
+			<div class="greenAlerts tasksContainer shadow">
+				<div class="flex flexJustifyCenter smallMargin">
+					<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('green')" class="addingBtn"></img>
+				</div>
+				<div class="tasksList" id="greenTasks">
+
+				</div>
+			</div>
+
+		</div>
 
 	</div>
-
-	<div id="loginPanel" class="guiPanel" style="width: 20%;">
-		<h1>Login page</h1>
-		<hr>
-		<form class="flex column" onsubmit="login(); return false;">
-			<input id="loginPanelUsername" type="text" class="inputField" value="Username"></input>
-			<input id="loginPanelPassword" type="text" class="inputField" value="Password"></input>
-			<button>Log in</button>
-		</form>
-	</div>
-
-
-	<div id="taskerPanel" class="hide guiPanel transparent width60 hiddenPanel">
-		<!--<input type="text" id="datepicker"> THIS IS HOW PIKADAY CALLENDAR LOOKS LIKE -->
-		<div  class="redAlerts tasksContainer shadow">
-
-			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('red')" class="addingBtn"></img>
-			</div>
-			<div class="tasksList" id="redTasks">
-
-			</div>
-		</div>
-		<div class="orangeAlerts tasksContainer shadow">
-			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('orange')" class="addingBtn"></img>
-			</div>
-			<div class="tasksList" id="orangeTasks">
-
-			</div>
-		</div>
-		<div class="yellowAlerts tasksContainer shadow">
-			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('yellow')" class="addingBtn"></img>
-			</div>
-			<div class="tasksList" id="yellowTasks">
-
-			</div>
-		</div>
-		<div class="greenAlerts tasksContainer shadow">
-			<div class="flex flexJustifyCenter smallMargin">
-				<img src="assets/add.png" width="50px" height="50px" onClick="$T.GUIelems.dataPicker.init('green')" class="addingBtn"></img>
-			</div>
-			<div class="tasksList" id="greenTasks">
-
-			</div>
-		</div>
-
-	</div>
-
-
 </body>
