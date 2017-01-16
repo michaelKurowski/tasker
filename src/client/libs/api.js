@@ -32,7 +32,6 @@ var $T = function (tsk, serverAddress) {
 		remove: function (id) {
 			this.changed = true
 			this.list.splice(id, 1)
-
 		},
 		edit: function (id, updateObj) {
 			this.changed = true
@@ -58,13 +57,11 @@ var $T = function (tsk, serverAddress) {
 			var self = this
 			this.list = this.list.map( function (element) {
 				if (element.urgency === 2) {
-
 					var daysToDeadline = Math.round((element.deadline - new Date().getTime()) / (60*60*24*1000))
 					if (daysToDeadline < 1) {
 						self.changed = true
 						element.urgency = 1
 					}
-
 				}
 				var hoursToDeadline = (element.deadline - new Date().getTime()) / (60*60*1000)
 				if (hoursToDeadline < 1 && !element.veryUrgent) {
@@ -252,6 +249,7 @@ var $T = function (tsk, serverAddress) {
 			tsk.tasksController.checkUrgency()
 			if (tsk.tasksController.changed){
 				tsk.tasksController.saveToCookies()
+				server.save()
 				tsk.view.renderAllTasks()
 			}
 			tsk.tasksController.changed = false
@@ -264,7 +262,9 @@ var $T = function (tsk, serverAddress) {
 		}, 60000)
 		tsk.view.renderAllTasks()
 		setInterval(function () {
+			server.load()
 			tsk.tasksController.changed = true
+
 		}, 18000)
 
 	}
