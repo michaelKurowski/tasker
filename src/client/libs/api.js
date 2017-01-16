@@ -177,6 +177,24 @@ var $T = function (tsk, serverAddress) {
 
 		GUIelems.login = document.getElementById('loginPanel')
 		GUIelems.tasks = document.getElementById('taskerPanel')
+
+		GUIelems.login.loginForm = document.getElementById('loginForm')
+		GUIelems.login.loginForm.onsubmit = function () {
+			var inputs = this.querySelectorAll('input')
+			var login = inputs[0].value
+			var password = inputs[1].value
+			var loginPromise = server.login(login, password)
+			loginPromise.then( function (value) {
+				server.load()
+				moveToScreen(GUIelems.login, GUIelems.tasks)
+			})
+			loginPromise.catch( function (value) {
+				//temp
+				alert(value)
+			})
+			return false
+		}
+
 		GUIelems.dataPicker = document.getElementById('dataPickerPanel')
 		GUIelems.dataPicker.titlePicker = document.getElementById('titlePicker')
 		GUIelems.dataPicker.datePicker = document.getElementById('datePicker')
@@ -187,6 +205,8 @@ var $T = function (tsk, serverAddress) {
 		GUIelems.tasks.yellow = document.getElementById('yellowTasks')
 		GUIelems.tasks.green = document.getElementById('greenTasks')
 		GUIelems.taskCreatorForm = document.getElementById('taskCreatorForm')
+
+
 		document.onkeydown = function (e) {
 			if (e.key === 'Escape') GUIelems.dataPicker.style.display = 'none'
 		}
@@ -367,21 +387,26 @@ var $T = function (tsk, serverAddress) {
 		}
 
 		if ($T.server.token) data.token = $T.server.token
-		ajax(JSON.stringify(data), {
-			200: function (response) {
-				var token = JSON.parse(response).token
-				console.log('Token received: ', token)
-				$T.server.token = token
-				$T.server.username = username
-			},
-			204: function () {
-				console.log('Already logged in')
-			},
-			401: function () {
-				console.log('Wrong credentials')
-			}
+		return new Promise ( function (resolve, reject) {
+			ajax(JSON.stringify(data), {
+				200: function (response) {
+					var token = JSON.parse(response).token
+					console.log('Token received: ', token)
+					$T.server.token = token
+					$T.server.username = username
+					resolve('token received')
+				},
+				204: function () {
+					console.log('Already logged in')
+					reject('already logged in')
+				},
+				401: function () {
+					console.log('Wrong credentials')
+					reject('wrong credentials')
+				}
 
-		}, serverAddress + '/login')
+			}, serverAddress + '/login')
+		})
 	}
 	server.logout = function () {
 
@@ -430,6 +455,3 @@ var $T = function (tsk, serverAddress) {
 
 	return tsk
 }($T || {}, config.serverAddress)
-function login() {
-	moveToScreen(document.getElementById('loginPanel'), document.getElementById('taskerPanel'))
-}
