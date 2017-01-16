@@ -17,7 +17,7 @@ module.exports = {
 	//Starts to listen on a specified port
 	startHttpServer(port, responsesHandler, cb) {
 		return new Promise( (resolve, reject) => {
-			cb = cb || () => console.log(`Http Server listening on port ${port}`)
+			cb = cb || (() => console.log(`Http Server listening on port ${port}`))
 			const server = http.createServer(responsesHandler)
 			server.listen(port, () => {
 				cb()
