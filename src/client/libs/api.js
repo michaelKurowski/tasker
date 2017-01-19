@@ -81,7 +81,7 @@ var $T = function (tsk, serverAddress) {
 			localStorage.setItem('saveData', JSON.stringify(this.list))
 		},
 		loadFromCookies: function () {
-			this.list = JSON.parse(localStorage.getItem('saveData'))
+			this.list = JSON.parse(localStorage.getItem('saveData')) || this.list
 			this.list.forEach( function (element, index, arr) {
 				var newTask = Object.create(taskProto)
 				var updatedTask = Object.assign(newTask, element)
@@ -168,15 +168,16 @@ var $T = function (tsk, serverAddress) {
 
 
 	tsk.init = function () {
-		console.log('cookie', document.cookie)
+		//console.log('cookie', document.cookie)
+		console.log(tsk.tasksController)
 		if (localStorage.getItem('saveData') !== '') tsk.tasksController.loadFromCookies()
 
 
 		GUIelems.login = document.getElementById('loginPanel')
 		GUIelems.tasks = document.getElementById('taskerPanel')
-
 		GUIelems.login.loginForm = document.getElementById('loginForm')
 		GUIelems.login.loginForm.onsubmit = function () {
+
 			var inputs = this.querySelectorAll('input')
 			var login = inputs[0].value
 			var password = inputs[1].value
@@ -190,6 +191,7 @@ var $T = function (tsk, serverAddress) {
 				alert(value)
 			})
 			return false
+
 		}
 
 		GUIelems.dataPicker = document.getElementById('dataPickerPanel')
