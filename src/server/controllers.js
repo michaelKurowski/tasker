@@ -132,7 +132,31 @@ module.exports = {
 				res.end('No data')
 			}
 			//res.end('Load')
-		}
+		},
+		createTask(req, res, db, data, sessionsManagement) {
+			const session = sessionsManagement.getIdFromSession(data.token)
+			sessionsManagement.authenticate(res, session)
+			if (data.tasks && data.username) {
+				//TODO
+			}
+			res.statusCode = 412
+			res.end('{}')
+		},
+		editTask(req, res, db, data, sessionsManagement) {
+
+		},
+		removeTask(req, res, db, data, sessionsManagement) {
+
+		},
+		addLog(req, res, db, data, sessionsManagement) {
+
+		},
+		editLog(req, res, db, data, sessionsManagement) {
+
+		},
+		removeLog(req, res, db, data, sessionsManagement) {
+
+		},
 	}
 }
 

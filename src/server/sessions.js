@@ -37,5 +37,13 @@ module.exports = {
 	deleteSession(token) {
 		delete this.sessions[token]
 		return true
+	},
+	authenticate(res, token) {
+		const session = sessionsManagement.getIdFromSession(data.token)
+		if (!session) {
+			res.statusCode = 200
+			res.end('{}')
+			return false
+		}
 	}
 }
