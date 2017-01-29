@@ -47,8 +47,7 @@ module.exports = {
 				const query = db.collection('users').insert({
 						username: data.username,
 						password: data.password,
-						email: data.email,
-						tasks: []
+						email: data.email
 					},
 					{w: 1}
 				)
@@ -136,11 +135,26 @@ module.exports = {
 		createTask(req, res, db, data, sessionsManagement) {
 			const session = sessionsManagement.getIdFromSession(data.token)
 			sessionsManagement.authenticate(res, session)
-			if (data.tasks && data.username) {
-				//TODO
+			session
+			if (data.title && data.deadline) {
+				const query = db.collection('tasks').insert({
+						ownerId: data.username,
+						name: data.password,
+						deadline: data.email,
+						tasks: []
+					},
+					{w: 1}
+				)
+				query.catch( insertErr => {
+					res.end(  JSON.stringify(insertErr)  )
+				})
+				query.then( insertResults => {
+					res.end(`User ${data.username} inserted`)
+					console.log(`User ${data.username} inserted`)
+				})
+			} else {
+				res.end('No data')
 			}
-			res.statusCode = 412
-			res.end('{}')
 		},
 		editTask(req, res, db, data, sessionsManagement) {
 
@@ -156,7 +170,7 @@ module.exports = {
 		},
 		removeLog(req, res, db, data, sessionsManagement) {
 
-		},
+		}
 	}
 }
 

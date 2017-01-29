@@ -8,18 +8,40 @@ module.exports = {
 		const token = bcrypt.hashSync(username + password + new Date().getTime(), this.salt)
 		this.sessions[token] =  {
 			id,
-			expirationDate: new Date().getTime() + cfg.sessionsExpiration
+			expirationDate: new Date().getTime() + cfg.sessionsExpiration,
+			username
 		}
 		const session = this.sessions[token]
 		console.log('Afdter creation ', session)
 		return token
 	},
-	getIdFromSession(token) {
+	sessionStillExists(sessionObject){
+		if (sessionObject && sessionObject.expirationDate > new Date().getTime()) {
+			return true
+		}
+		delete this.sessions[token]
+		return false
+	},
+	getIdFromSession(token) { //archaic function, will be replaced in code
 		const session = this.sessions[token]
 		console.log('sessions.getIdFromSession(token): whole list ', this.sessions)
 		console.log('sessions.getIdFromSession(token): getting results ',token, 'results:', session)
 		if (session && session.expirationDate > new Date().getTime()) {
 			return token
+		}
+		delete this.sessions[token]
+		return false
+	},
+	getSessionFromToken(token) {
+		const session = this.sessions[token]
+		return this.sessionStillExists(session) ? session : false
+	},
+	getUsernameFromSession(token) {
+		const session = this.sessions[token]
+		console.log('sessions.getIdFromSession(token): whole list ', this.sessions)
+		console.log('sessions.getIdFromSession(token): getting results ',token, 'results:', session)
+		if (session && session.expirationDate > new Date().getTime()) {
+			return session.username
 		}
 		delete this.sessions[token]
 		return false
