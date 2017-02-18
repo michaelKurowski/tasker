@@ -135,7 +135,6 @@ module.exports = {
 		createTask(req, res, db, data, sessionsManagement) {
 			const session = sessionsManagement.getIdFromSession(data.token)
 			sessionsManagement.authenticate(res, session)
-			session
 			if (data.title && data.deadline) {
 				const query = db.collection('tasks').insert({
 						ownerId: data.username,
@@ -169,6 +168,43 @@ module.exports = {
 
 		},
 		removeLog(req, res, db, data, sessionsManagement) {
+
+		},
+		initDb(req, res, db) {
+			console.log('initiating database\n')
+			Promise.all([
+				db.createCollection('users', {
+					validator: {
+						$or: [
+							{ email: { $regex: /@mongodb\.com$/ } }
+						]
+					}
+				}),
+				db.createCollection('tasks', {
+					validator: {
+						$or: [
+							{ title: { $type: 'string' } }
+						]
+					}
+				}),
+				db.createCollection('historyLogs', {
+					validator: {
+						$or: [
+							{ title: { $type: 'string' } }
+						]
+					}
+				})
+			]).then( () => {
+				console.log('Collections created')
+				db.collection('users').insertOne({
+					username: 'admin',
+					email: 'admin@tasker.ninja',
+					password: 'dupa'
+				}).then( ()=> {
+					console.log('Database initiated')
+					res.end('Database initiated')
+				})
+			})
 
 		}
 	}
