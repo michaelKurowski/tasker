@@ -176,6 +176,7 @@ module.exports = {
 				db.createCollection('users', {
 					validator: {
 						$or: [
+							{ username: { $exists: false } },
 							{ email: { $regex: /@mongodb\.com$/ } }
 						]
 					}
