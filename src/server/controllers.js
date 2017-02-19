@@ -137,10 +137,10 @@ module.exports = {
 			sessionsManagement.authenticate(res, session)
 			if (data.title && data.deadline) {
 				const query = db.collection('tasks').insert({
-						ownerId: data.username,
-						name: data.password,
-						deadline: data.email,
-						tasks: []
+						ownerId: new ObjectID(session.id),
+						name: data.title,
+						deadline: data.deadline,
+						creationDate: new Date(),
 					},
 					{w: 1}
 				)
@@ -148,8 +148,8 @@ module.exports = {
 					res.end(  JSON.stringify(insertErr)  )
 				})
 				query.then( insertResults => {
-					res.end(`User ${data.username} inserted`)
-					console.log(`User ${data.username} inserted`)
+					res.end(`Task ${data.title} inserted`)
+					console.log(`Task ${data.title} inserted`)
 				})
 			} else {
 				res.end('No data')
