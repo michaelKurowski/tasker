@@ -20,5 +20,5 @@
 			}
 		]
 	},
-	"sessionsExpiration": 18000
+	"sessionsExpiration": 1080000
 }
