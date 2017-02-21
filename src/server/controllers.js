@@ -97,8 +97,9 @@ module.exports = {
 		load(req, res, db, data, sessionsManagement) {
 			console.log('login: data received:', data)
 			const session = sessionsManagement.getIdFromSession(data.token)
+			console.log('controller load: session', session)
 			if (!session) {
-				console.log('login: NOT LOGGED IN', session)
+				console.log('controller load: login: NOT LOGGED IN', session)
 				//console.log(session)
 				//TODO manage to set status code to 401 without breaking up a whole app
 				res.statusCode = 200

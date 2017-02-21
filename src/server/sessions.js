@@ -27,8 +27,10 @@ module.exports = {
 		console.log('sessions.getIdFromSession(token): whole list ', this.sessions)
 		console.log('sessions.getIdFromSession(token): getting results ',token, 'results:', session)
 		if (session && session.expirationDate > new Date().getTime()) {
+			console.log('sessions.getIdFromSession(token): (session && session.expirationDate > new Date().getTime()) returned true')
 			return token
 		}
+		console.log('sessions.getIdFromSession(token): (session && session.expirationDate > new Date().getTime()) returned false')
 		delete this.sessions[token]
 		return false
 	},
