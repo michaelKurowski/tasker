@@ -1,4 +1,5 @@
 'use strict'
+let ObjectID = require('mongodb').ObjectID
 module.exports = {
 	controllers: {
 		login(req, res, db, data, sessionsManagement) {
@@ -178,7 +179,7 @@ module.exports = {
 					validator: {
 						$or: [
 							{ username: { $exists: false } },
-							{ email: { $regex: /@mongodb\.com$/ } }
+							{ email: { $regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ } }
 						]
 					}
 				}),
@@ -198,14 +199,36 @@ module.exports = {
 				})
 			]).then( () => {
 				console.log('Collections created')
-				db.collection('users').insertOne({
-					username: 'admin',
-					email: 'admin@tasker.ninja',
-					password: 'dupa'
-				}).then( ()=> {
+				let adminId = new ObjectID()
+				let testTaskId = new ObjectID()
+				Promise.all(
+					[
+						db.collection('users').insertOne({
+							_id: adminId,
+							username: 'admin',
+							email: 'admin@tasker.ninja',
+							password: 'dupa',
+							creationDate: new Date().getTime()
+						}),
+						db.collection('tasks').insertOne({
+							_id: testTaskId,
+							ownerId: adminId,
+							title: 'test deadline',
+							deadline: new Date().getTime() + 100000,
+							creationDate: new Date().getTime()
+						}),
+						db.collection('historyLogs').insertOne({
+							parentTaskId: testTaskId,
+							ownerId: 'admin',
+							title: 'test history log',
+							creationDate: new Date().getTime()
+						})
+					]
+				).then( ()=> {
 					console.log('Database initiated')
 					res.end('Database initiated')
-				})
+				}).catch( err => console.log(err))
+
 			})
 
 		}
