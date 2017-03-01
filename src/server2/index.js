@@ -2,10 +2,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cfg = require('./config.json')
+const log = require('chalk')
 
 let app = express()
-
-//Listeners
 app.post('/', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
@@ -30,6 +29,12 @@ app.post('/remove/task', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.listen(cfg.httpPort, function () {
 
+require('./init.js').then( values =>
+	app.listen(cfg.httpPort, function () {
+
+	})
+).catch( err => {
+	log.red('init.js unsuccessful.')
 })
+//Listeners

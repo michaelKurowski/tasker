@@ -5,9 +5,9 @@ const assert = require('assert')
 let dbConnection = new Promise( (resolve, reject) => {
 	console.log('Connecting to MongoDB server...')
 	MongoClient.connect(cfg.mongoDbUrl, (err, db) => {
-		if (!assert.equal(null, err)) return reject(err)
+		assert.equal(null, err)
 		console.log('Connected correctly to MongoDB server.')
-		return resolve(db)
+		resolve(db)
 	})
 })
 module.exports = Promise.all([dbConnection])
