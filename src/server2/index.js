@@ -1,40 +1,21 @@
 'use strict'
-const express = require('express')
-const bodyParser = require('body-parser')
 const cfg = require('./config.json')
-const log = require('chalk')
+const chalk = require('chalk')
+const log = console.log
+let httpServer = require('./routes.js')
 
-let app = express()
-app.post('/', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-app.post('/login', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-app.post('/signUp', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-app.post('/load', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-app.post('/create/task', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-app.post('/remove/task', function (req, res) {
-	//Sending tasker files
-	res.send('Hello World!')
-})
-
-require('./init.js').then( values =>
-	app.listen(cfg.httpPort, function () {
-
+let init = require('./init.js')
+init.then( values => {
+	log( chalk.white('Initialization completed') )
+	httpServer.listen(cfg.httpPort, () => {
+		log( chalk.green(`HTTP server listenin on port ${cfg.httpPort}`) )
 	})
+	}
 ).catch( err => {
-	log.red('init.js unsuccessful.')
+	log(chalk.red('init.js unsuccessful.', err))
+})
+
+init.catch( err => {
+	log(chalk.red('init.js unsuccessful.', err))
 })
 //Listeners
