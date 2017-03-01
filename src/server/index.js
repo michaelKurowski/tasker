@@ -1,8 +1,6 @@
 "use strict"
 const cfg = require('./config.json')
 const taskerVersion = require('./package.json').version
-const express = require('express')
-const bodyParser = require('body-parser').json()
 const $T = Object.assign( {},
 	require('./init.js'),
 	require('./controllers.js')
@@ -11,13 +9,7 @@ const $sM = require('./sessions.js')
 const instanceType = (cfg.devInstance) ? 'developerInstance' : 'productionInstance'
 //const bcrypt = require('bcrypt')
 
-let app = express()
-/*
-app.post('/login', bodyParser, function (req, res) {
-  console.log(req.body);
-  console.log('Send button clicked');
-})
-*/
+
 $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
 	$T.startHttpServer(
 		cfg.httpListeningPort,
@@ -29,15 +21,10 @@ $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
 })
 
 
-
-
-
-
-
 function handleRequest(req, res, db){
 	//Extracts slice of path after '/' in request url
 	const requestAction = req.url.slice(1)
-	let body = ''
+	let body = []
 	//Sets response header according to config.json
 	cfg.httpServerResponsesHeader[instanceType].forEach(
 		record => res.setHeader(record.header, record.value)
@@ -52,11 +39,12 @@ function handleRequest(req, res, db){
 		}
 	).on(
 		'data',
-		chunk => body += chunk
+		chunk => body.push(chunk)
 	).on(
 		'end',
 		() => {
 			//Redirects to a proper controller
+			body = Buffer.concat(body).toString()
 			console.log('/' + requestAction)
 			console.log('Received body: ', body)
 			let parsedBody = ''

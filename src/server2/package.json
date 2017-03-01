@@ -1,0 +1,15 @@
+{
+  "name": "tasker-server",
+  "version": "1.0.0",
+  "description": "Server for tasker app",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "tasker",
+    "server"
+  ],
+  "author": "Michael Kurowski",
+  "license": "ISC"
+}
