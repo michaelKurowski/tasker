@@ -1,6 +1,8 @@
 "use strict"
 const cfg = require('./config.json')
 const taskerVersion = require('./package.json').version
+const express = require('express')
+const bodyParser = require('body-parser').json()
 const $T = Object.assign( {},
 	require('./init.js'),
 	require('./controllers.js')
@@ -9,7 +11,13 @@ const $sM = require('./sessions.js')
 const instanceType = (cfg.devInstance) ? 'developerInstance' : 'productionInstance'
 //const bcrypt = require('bcrypt')
 
-
+let app = express()
+/*
+app.post('/login', bodyParser, function (req, res) {
+  console.log(req.body);
+  console.log('Send button clicked');
+})
+*/
 $T.connectToDb(cfg.mongoDbUrl).then( dbConnectionObject => {
 	$T.startHttpServer(
 		cfg.httpListeningPort,
@@ -49,14 +57,14 @@ function handleRequest(req, res, db){
 		'end',
 		() => {
 			//Redirects to a proper controller
-			console.log(body)
+			console.log('/' + requestAction)
+			console.log('Received body: ', body)
 			let parsedBody = ''
 			try {
 				parsedBody = JSON.parse(body)
 			} catch(err) {
 				console.log('An error occured during parsing received body:', body, err)
 			}
-			console.log('body', body)
 			if ($T.controllers[requestAction]) {
 				$T.controllers[requestAction](req, res, db, parsedBody, $sM)
 			} else {

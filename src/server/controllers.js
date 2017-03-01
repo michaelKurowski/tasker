@@ -3,8 +3,7 @@ let ObjectID = require('mongodb').ObjectID
 module.exports = {
 	controllers: {
 		login(req, res, db, data, sessionsManagement) {
-			//console.log(sessionsManagement.sessions)
-			if (sessionsManagement.getIdFromSession(data.token)) {
+			if (sessionsManagement.getSessionFromToken(data.token)) {
 				res.statusCode = 204
 				return res.end('Already logged in')
 			}
@@ -30,6 +29,7 @@ module.exports = {
 							//console.log(`${data.username} logged in using ${data.password}.`)
 							const token = sessionsManagement.spawnSession(data.username, data.password, result[0]._id)
 							res.end(  JSON.stringify({token}))
+							console.log('/login ',data.username, ' logged in')
 						} else {
 							//console.log(`${data.username} tried to log in using ${data.password}.`)
 							res.statusCode = 401
@@ -69,7 +69,7 @@ module.exports = {
 			res.end('Logout')
 		},
 		save(req, res, db, data, sessionsManagement) {
-			const session = sessionsManagement.getIdFromSession(data.token)
+			const session = sessionsManagement.getSessionFromToken(data.token)
 			//console.log('data: ', data.tasks, data.username)
 
 			if (!session) {
@@ -97,7 +97,7 @@ module.exports = {
 		},
 		load(req, res, db, data, sessionsManagement) {
 			console.log('login: data received:', data)
-			const session = sessionsManagement.getIdFromSession(data.token)
+			const session = sessionsManagement.getSessionFromToken(data.token)
 			console.log('controller load: session', session)
 			if (!session) {
 				console.log('controller load: login: NOT LOGGED IN', session)
@@ -108,17 +108,17 @@ module.exports = {
 				return false
 			}
 			if (session) {
+				let tasksMap = []
 				const queryPromise = new Promise( (resolve, reject) => {
-					db.collection('users').find({
-							username: data.username
-						},
-						{tasks: 1},
-						(err, result) => {
-							//console.log(result)
-							return err ? reject(err) : resolve(result)
-						}
-					)
+					db.collection('tasks').find({
+						ownerId: session.id
+					}).then( results => {
+						return Promise( (resolve, reject) => {
+							console.log('queryPromise ',results.toArray())
+						})
+					})
 				})
+
 				queryPromise.catch( findErr => {
 					res.end(  JSON.stringify(insertErr)  )
 				})
@@ -135,7 +135,7 @@ module.exports = {
 			//res.end('Load')
 		},
 		createTask(req, res, db, data, sessionsManagement) {
-			const session = sessionsManagement.getIdFromSession(data.token)
+			const session = sessionsManagement.getSessionFromToken(data.token)
 			sessionsManagement.authenticate(res, session)
 			if (data.title && data.deadline) {
 				const query = db.collection('tasks').insert({
