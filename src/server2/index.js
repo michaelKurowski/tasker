@@ -6,27 +6,27 @@ const cfg = require('./config.json')
 let app = express()
 
 //Listeners
-app.get('/', function (req, res) {
+app.post('/', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.get('/login', function (req, res) {
+app.post('/login', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.get('/signUp', function (req, res) {
+app.post('/signUp', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.get('/load', function (req, res) {
+app.post('/load', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.get('/create/task', function (req, res) {
+app.post('/create/task', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-app.get('/remove/task', function (req, res) {
+app.post('/remove/task', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })

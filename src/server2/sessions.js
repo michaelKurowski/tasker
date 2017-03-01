@@ -12,7 +12,7 @@ module.exports = {
 			username
 		}
 		const session = this.sessions[token]
-		console.log('Afdter creation ', session)
+		console.log('After creation ', session)
 		return token
 	},
 	sessionStillExists(sessionObject){
