@@ -19,13 +19,33 @@ httpServer.post('/load', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-httpServer.post('/create/task', function (req, res) {
+
+
+httpServer.post('/task/remove', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
-httpServer.post('/remove/task', function (req, res) {
+httpServer.post('/task/edit', function (req, res) {
 	//Sending tasker files
 	res.send('Hello World!')
 })
+httpServer.post('/task/create', function (req, res) {
+	//Sending tasker files
+	res.send('Hello World!')
+})
+
+httpServer.post('/user/create', function (req, res) {
+	//Sending tasker files
+	res.send('Hello World!')
+})
+httpServer.post('/user/edit', function (req, res) {
+	//Sending tasker files
+	res.send('Hello World!')
+})
+httpServer.post('/user/remove', function (req, res) {
+	//Sending tasker files
+	res.send('Hello World!')
+})
+
 
 module.exports = httpServer

@@ -1,0 +1,57 @@
+[
+	{
+		"route" : "/",
+		"controller" : "sendClient"
+	},
+
+	{
+		"route" : "/user/create",
+		"controller" : "userCreate"
+	},
+	{
+		"route" : "/user/edit",
+		"controller" : "userEdit"
+	},
+	{
+		"route" : "/user/remove",
+		"controller" : "userRemove"
+	},
+	{
+		"route" : "/user/read",
+		"controller" : "userRead"
+	},
+
+	{
+		"route" : "/task/create",
+		"controller" : "userCreate"
+	},
+	{
+		"route" : "/task/edit",
+		"controller" : "userEdit"
+	},
+	{
+		"route" : "/task/remove",
+		"controller" : "userRemove"
+	},
+	{
+		"route" : "/task/read",
+		"controller" : "userRead"
+	},
+
+	{
+		"route" : "/historyLog/create",
+		"controller" : "userCreate"
+	},
+	{
+		"route" : "/historyLog/edit",
+		"controller" : "userEdit"
+	},
+	{
+		"route" : "/historyLog/remove",
+		"controller" : "userRemove"
+	},
+	{
+		"route" : "/historyLog/read",
+		"controller" : "userRead"
+	}
+]
