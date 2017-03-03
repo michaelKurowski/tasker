@@ -1,4 +1,4 @@
-
+const fs = require('fs')
 
 const cfg = require('./config.json')
 const routes = require('./routes.json')
@@ -40,18 +40,42 @@ assigns controllers to them.
 */
 let assigningRoutes = httpServerCreation.then( httpServer => {
 	//Loading routes to express httpServer
+	let filesSpawningPromises = []
 	routes.forEach( (element, index) => {
 		//httpServer(<route>, <callback>)
 		//TODO creation of controller files if they are not present
-		httpServer.post(
-			element.route,
-			require(`/controllers/${element.controller}.js`)
-		)
+		let checkController = new Promise( (resolve, reject) => {
+			let ctrlPath = `./controllers/${element.controller}.js`
+			if ( !fs.existsSync(ctrlPath) ) {
+				fs.writeFile(
+					ctrlPath,
+					'module.exports = (req, res) => {}',
+					err => {
+						if (err) {
+							reject(err)
+							log(chalk.red(err))
+						} else {
+							log('Created file: ', ctrlPath)
+							resolve()
+						}
+					}
+				)
+			}
+		})
+		filesSpawningPromises.push(checkController)
 	})
-	resolve(httpServer)
-}).catch( err =>
-	log(chalk.red('[init.js] Assigning routes to express httpServer unsuccessful.', err))
-)
+	let resolveAssigningRoutes = resolve
+	Promise.all(filesSpawningPromises).then( () => {
+		routesAssigningPromises.then( () => {
+			httpServer.post(
+				element.route,
+				require(ctrlPath),
+				() => resolveAssigningRoutes()
+			)
+		})
+	})
+})
+
 
 /*
 Passes promises of each of enlisted actions.
