@@ -23,35 +23,35 @@
 
 	{
 		"route" : "/task/create",
-		"controller" : "userCreate"
+		"controller" : "taskCreate"
 	},
 	{
 		"route" : "/task/edit",
-		"controller" : "userEdit"
+		"controller" : "taskEdit"
 	},
 	{
 		"route" : "/task/remove",
-		"controller" : "userRemove"
+		"controller" : "taskRemove"
 	},
 	{
 		"route" : "/task/read",
-		"controller" : "userRead"
+		"controller" : "taskRead"
 	},
 
 	{
 		"route" : "/historyLog/create",
-		"controller" : "userCreate"
+		"controller" : "historyLogCreate"
 	},
 	{
 		"route" : "/historyLog/edit",
-		"controller" : "userEdit"
+		"controller" : "historyLogEdit"
 	},
 	{
 		"route" : "/historyLog/remove",
-		"controller" : "userRemove"
+		"controller" : "historyLogRemove"
 	},
 	{
 		"route" : "/historyLog/read",
-		"controller" : "userRead"
+		"controller" : "historyLogRead"
 	}
 ]
