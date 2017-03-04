@@ -44,12 +44,12 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 	routes.forEach( (element, index) => {
 		//httpServer(<route>, <callback>)
 		//TODO creation of controller files if they are not present
-		let checkController = new Promise( (resolve, reject) => {
-			let ctrlPath = `./controllers/${element.controller}.js`
-			if ( !fs.existsSync(ctrlPath) ) {
+		let ctrlPath = `./controllers/${element.controller}.js`
+		if ( !fs.existsSync(ctrlPath) ) {
+			let checkController = new Promise( (resolve, reject) => {
 				fs.writeFile(
 					ctrlPath,
-					'module.exports = (req, res) => {}',
+					`module.exports = (req, res) => res.send('${element.controller}')`,
 					err => {
 						if (err) {
 							reject(err)
@@ -60,22 +60,33 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 						}
 					}
 				)
-			}
-		})
-		filesSpawningPromises.push(checkController)
+			})
+			filesSpawningPromises.push(checkController)
+		}
 	})
-	let resolveAssigningRoutes = resolve
-	Promise.all(filesSpawningPromises).then( () => {
-		routesAssigningPromises.then( () => {
-			httpServer.post(
-				element.route,
-				require(ctrlPath),
-				() => resolveAssigningRoutes()
-			)
+	//setInterval(() => log(filesSpawningPromises), 1000)
+	if (filesSpawningPromises.length === 0) {
+		//If there is no promises, then spawn immidiatelly resolving promises
+		//in order to resolve Promise.all
+		filesSpawningPromises.push(new Promise((resolve, rejetc) => {resolve()}))
+	}
+	return Promise.all(filesSpawningPromises).then( () => {
+		log('All controllers exist')
+		return new Promise( (resolve, reject) => {
+			routes.forEach( element => {
+				return httpServer.get(
+					element.route,
+					require(`./controllers/${element.controller}.js`),
+					err => {
+						log(chalk.red(err))
+						reject(err)
+					}
+				)
+			})
+			resolve()
 		})
 	})
 })
-
 
 /*
 Passes promises of each of enlisted actions.
