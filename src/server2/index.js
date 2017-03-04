@@ -5,9 +5,8 @@ const log = console.log
 
 let init = require('./init.js')
 init.then( values => {
-	log(values[0])
-	log( chalk.white('Initialization completed') )
-
+	let db = values[0]
+	log( chalk.green('Initialization completed. Tasker server is running') )
 	}
 )
 init.catch( err => {
