@@ -37,13 +37,13 @@ httpServerCreation.catch( err =>
 /*
 Assigns routes from ./routes.json to express http Server and
 assigns controllers to them.
+TODO Refactor this, or/and create from it separated function to spawn
+lacking files
 */
 let assigningRoutes = httpServerCreation.then( httpServer => {
-	//Loading routes to express httpServer
+	//Creating controller files
 	let filesSpawningPromises = []
 	routes.forEach( (element, index) => {
-		//httpServer(<route>, <callback>)
-		//TODO creation of controller files if they are not present
 		let ctrlPath = `./controllers/${element.controller}.js`
 		if ( !fs.existsSync(ctrlPath) ) {
 			let checkController = new Promise( (resolve, reject) => {
@@ -64,7 +64,6 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 			filesSpawningPromises.push(checkController)
 		}
 	})
-	//setInterval(() => log(filesSpawningPromises), 1000)
 	if (filesSpawningPromises.length === 0) {
 		//If there is no promises, then spawn immidiatelly resolving promises
 		//in order to resolve Promise.all
@@ -74,6 +73,8 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
 			routes.forEach( element => {
+				//I'm not sure if this action is synchrous.
+				//I might need to create promise for it
 				return httpServer.get(
 					element.route,
 					require(`./controllers/${element.controller}.js`),
