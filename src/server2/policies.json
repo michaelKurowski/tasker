@@ -1,0 +1,10 @@
+[
+	{
+		"name": "*",
+		"fileName": "allowAll"
+	},
+	{
+		"name": "loggedIn",
+		"fileName": "loggedIn"
+	}
+]
