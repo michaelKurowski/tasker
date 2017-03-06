@@ -20,5 +20,6 @@
 			}
 		]
 	},
-	"sessionsExpiration": 1080000
+	"sessionsExpiration": 1080000,
+	"saltStrength": 10
 }
