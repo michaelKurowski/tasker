@@ -1,1 +1,1 @@
-module.exports = (req, res) => res.send('userRead')
+module.exports = (req, res) => res.send('ThisIsATest')

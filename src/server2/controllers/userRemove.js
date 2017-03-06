@@ -1,1 +1,1 @@
-module.exports = (req, res) => res.send('userRemove')
+module.exports = (req, res) => res.send('ThisIsATest')

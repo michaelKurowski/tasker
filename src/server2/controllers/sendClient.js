@@ -1,1 +1,1 @@
-module.exports = (req, res) => res.send('sendClient')
+module.exports = (req, res) => res.send('ThisIsATest')

@@ -1,1 +1,1 @@
-module.exports = (req, res) => res.send('historyLogRead')
+module.exports = (req, res) => res.send('ThisIsATest')
