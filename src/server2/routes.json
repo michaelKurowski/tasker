@@ -1,57 +1,79 @@
 [
 	{
 		"route" : "/",
-		"controller" : "sendClient"
+		"controller" : "sendClient",
+		"policy" : "*"
 	},
-
+	{
+		"route" : "/signUp",
+		"controller" : "signUp",
+		"policy" : "*"
+	},
+	{
+		"route" : "/logIn",
+		"controller" : "logIn",
+		"policy" : "*"
+	},
 	{
 		"route" : "/user/create",
-		"controller" : "userCreate"
+		"controller" : "userCreate",
+		"policy" : "administrator"
 	},
 	{
 		"route" : "/user/edit",
-		"controller" : "userEdit"
+		"controller" : "userEdit",
+		"policy" : "administrator"
 	},
 	{
 		"route" : "/user/remove",
-		"controller" : "userRemove"
+		"controller" : "userRemove",
+		"policy" : "administrator"
 	},
 	{
 		"route" : "/user/read",
-		"controller" : "userRead"
+		"controller" : "userRead",
+		"policy" : "administrator"
 	},
 
 	{
 		"route" : "/task/create",
-		"controller" : "taskCreate"
+		"controller" : "taskCreate",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/task/edit",
-		"controller" : "taskEdit"
+		"controller" : "taskEdit",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/task/remove",
-		"controller" : "taskRemove"
+		"controller" : "taskRemove",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/task/read",
-		"controller" : "taskRead"
+		"controller" : "taskRead",
+		"policy" : "loggedIn"
 	},
 
 	{
 		"route" : "/historyLog/create",
-		"controller" : "historyLogCreate"
+		"controller" : "historyLogCreate",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/historyLog/edit",
-		"controller" : "historyLogEdit"
+		"controller" : "historyLogEdit",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/historyLog/remove",
-		"controller" : "historyLogRemove"
+		"controller" : "historyLogRemove",
+		"policy" : "loggedIn"
 	},
 	{
 		"route" : "/historyLog/read",
-		"controller" : "historyLogRead"
+		"controller" : "historyLogRead",
+		"policy" : "loggedIn"
 	}
 ]
