@@ -52,7 +52,7 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 		return new Promise( (resolve, reject) => {
 			routes.forEach( element =>
 				//TODO make initialization wait until all routes will be set
-				return httpServer.get(
+				httpServer.get(
 					element.route,
 					require(`./controllers/${element.controller}.js`),
 					err => {
