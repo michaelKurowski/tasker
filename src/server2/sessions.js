@@ -1,10 +1,21 @@
 'use strict'
 const cfg = require('./config.json')
 const bcrypt = require('bcrypt')
+//TODO completly rewrite this madness
+/*
+	Plan of new sessions.js exported object
+	spawnSession(string username, string password, int userId) -> promise
+	getSessionByToken(token) -> session
+	stillExists(token) -> bool
+	prolongSession(token) -> bool
+	deleteSession(token) -> bool
+	authenticate(token) -> bool - checks if session exists
+*/
 module.exports = {
 	sessions: {},
 	salt: bcrypt.genSaltSync(10),
 	spawnSession(username, password, id) {
+		//TODO make it async
 		const token = bcrypt.hashSync(username + password + new Date().getTime(), this.salt)
 		this.sessions[token] =  {
 			id,

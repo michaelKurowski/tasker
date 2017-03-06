@@ -43,7 +43,7 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 	//Creating controller files
 	let spawnControllers = createFilesFromConfig(
 		routes,
-		'./controllers/',
+		'./controllers',
 		'controller',
 		`module.exports = (req, res) => res.send('ThisIsATest')`
 	)
