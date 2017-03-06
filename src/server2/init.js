@@ -51,7 +51,8 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
 			routes.forEach( element => {
-
+				//I'm not sure if this action is synchrous.
+				//I might need to create promise for it
 				return httpServer.get(
 					element.route,
 					require(`./controllers/${element.controller}.js`),
@@ -64,8 +65,6 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 			resolve()
 		})
 	})
-	spawnControllers.catch( err => log(`[init.js] An error occured during spawning controllers ${err}`))
-
 })
 
 /*
