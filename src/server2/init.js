@@ -37,7 +37,7 @@ httpServerCreation.catch( err =>
 /*
 Assigns routes from ./routes.json to express http Server and
 assigns controllers to them.
-TODO Middleware (policies)
+TODO Middleware (policies and sessions)
 */
 let assigningRoutes = httpServerCreation.then( httpServer => {
 	//Creating controller files
@@ -50,7 +50,8 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 	return spawnControllers.then( () => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
-			routes.forEach( element => {
+			routes.forEach( element =>
+				//TODO make initialization wait until all routes will be set
 				return httpServer.get(
 					element.route,
 					require(`./controllers/${element.controller}.js`),
@@ -59,7 +60,7 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 						reject(err)
 					}
 				)
-			})
+			)
 			resolve()
 		})
 	})

@@ -1,14 +1,14 @@
 [
 	{
-		"name": "*",
-		"fileName": "allowAll"
+		"name" : "*",
+		"fileName" : "allowAll"
 	},
 	{
-		"name": "loggedIn",
-		"fileName": "loggedIn"
+		"name" : "loggedIn",
+		"fileName" : "loggedIn"
 	},
 	{
-		"name": "administrator",
-		"fileName": "administrator"
+		"name" : "administrator",
+		"fileName" : "administrator"
 	}
 ]
