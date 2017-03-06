@@ -1,5 +1,5 @@
 const fs = require('fs')
-
+const createFilesFromConfig = require('./utils/createFiles.js')
 const cfg = require('./config.json')
 const routes = require('./routes.json')
 
@@ -37,39 +37,17 @@ httpServerCreation.catch( err =>
 /*
 Assigns routes from ./routes.json to express http Server and
 assigns controllers to them.
-TODO Refactor this, or/and create from it separated function to spawn
-lacking files
+TODO Middleware (policies)
 */
 let assigningRoutes = httpServerCreation.then( httpServer => {
 	//Creating controller files
-	let filesSpawningPromises = []
-	routes.forEach( (element, index) => {
-		let ctrlPath = `./controllers/${element.controller}.js`
-		if ( !fs.existsSync(ctrlPath) ) {
-			let checkController = new Promise( (resolve, reject) => {
-				fs.writeFile(
-					ctrlPath,
-					`module.exports = (req, res) => res.send('${element.controller}')`,
-					err => {
-						if (err) {
-							reject(err)
-							log(chalk.red(err))
-						} else {
-							log('Created file: ', ctrlPath)
-							resolve()
-						}
-					}
-				)
-			})
-			filesSpawningPromises.push(checkController)
-		}
-	})
-	if (filesSpawningPromises.length === 0) {
-		//If there is no promises, then spawn immidiatelly resolving promises
-		//in order to resolve Promise.all
-		filesSpawningPromises.push(new Promise((resolve, rejetc) => {resolve()}))
-	}
-	return Promise.all(filesSpawningPromises).then( () => {
+	let spawnControllers = createFilesFromConfig(
+		routes,
+		'./controllers/',
+		'controller',
+		`module.exports = (req, res) => res.send('ThisIsATest')`
+	)
+	return spawnControllers.then( () => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
 			routes.forEach( element => {
