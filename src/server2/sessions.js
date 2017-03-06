@@ -1,16 +1,86 @@
 'use strict'
 const cfg = require('./config.json')
 const bcrypt = require('bcrypt')
+const ObjectId = require('mongodb').ObjectID
+const log = console.log
+const chalk = require('chalk')
 //TODO completly rewrite this madness
 /*
 	Plan of new sessions.js exported object
-	spawnSession(string username, string password, int userId) -> promise
+	createSession(string username, string password, int userId) -> promise with session
 	getSessionByToken(token) -> session
 	stillExists(token) -> bool
 	prolongSession(token) -> bool
 	deleteSession(token) -> bool
 	authenticate(token) -> bool - checks if session exists
+
+	session Obj
+	{username, userId, creationDate, expirationDate}
 */
+module.exports = {
+	activeSessions: new Map(),
+	salt: bcrypt.genSaltSync(cfg.saltStrength),
+	createSession(username, password, userId) {
+		return new Promise( (resolve, reject) => {
+			const token = bcrypt.hash(
+				new ObjectId().str,
+				this.salt,
+				null,
+				(err, hash) => {
+					if (err) {
+						log(chalk.red(`[sessions.js] An error during creating a session ${err}`))
+						return reject(err)
+					}
+					this.activeSessions.set(
+						hash,
+						{
+							username,
+							userId,
+							creationDate: new Date().getTime(),
+							expirationDate: new Date().getTime() + cfg.sessionsExpiration
+						}
+					)
+					return resolve(hash)
+				})
+			}
+		)
+	},
+	getSessionByToken(token) {
+		if (this.stillExists(token)) return this.activeSessions.get(token)
+		return false
+	},
+	stillExists(token) {
+		const session = this.activeSessions.get(token)
+		if (session.expirationDate < new Date.getTime()) {
+			this.activeSessions.delete(token)
+			return false
+		}
+		return true
+	},
+	prolongSession(token) {
+		let session = this.activeSessions.get(token)
+		if (session) {
+			session.expirationDate = new Date().getTime() + cfg.sessionsExpiration
+			this.activeSessions.set(token, session)
+			return true
+		}
+		return false
+	},
+	deleteSession(token) {
+		if (stillExists(token)) {
+			this.activeSessions.delete(token)
+			return true
+		}
+		return false
+	},
+	authenticate(username, token) {
+		const session = this.getSessionByToken(token)
+		if (session && session.username === username) return true
+		return false
+	}
+}
+
+/*
 module.exports = {
 	sessions: {},
 	salt: bcrypt.genSaltSync(10),
@@ -70,3 +140,4 @@ module.exports = {
 		}
 	}
 }
+*/
