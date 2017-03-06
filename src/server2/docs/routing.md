@@ -1,4 +1,4 @@
 # Network model
-POST HTTP request -> Policy -> Controller<br>
-<br>
-Models<br>
+POST HTTP request -> Session control -> Policy -> Controller
+
+# DB models
