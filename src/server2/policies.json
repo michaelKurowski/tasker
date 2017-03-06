@@ -6,5 +6,9 @@
 	{
 		"name": "loggedIn",
 		"fileName": "loggedIn"
+	},
+	{
+		"name": "administrator",
+		"fileName": "administrator"
 	}
 ]
