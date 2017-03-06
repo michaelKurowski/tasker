@@ -1,4 +1,3 @@
-const fs = require('fs')
 const createFilesFromConfig = require('./utils/createFiles.js')
 const cfg = require('./config.json')
 const routes = require('./routes.json')
@@ -14,10 +13,11 @@ const log = console.log
 let httpServer = express()
 
 let dbConnection = new Promise( (resolve, reject) => {
-	console.log('Connecting to MongoDB server...')
+	log('Connecting to MongoDB server...')
 	MongoClient.connect(cfg.mongoDbUrl, (err, db) => {
+		//TODO reject
 		assert.equal(null, err)
-		console.log(`Connected correctly to MongoDB server: ${cfg.mongoDbUrl}`)
+		log(`Connected correctly to MongoDB server: ${cfg.mongoDbUrl}`)
 		resolve(db)
 	})
 })
@@ -26,7 +26,7 @@ let dbConnection = new Promise( (resolve, reject) => {
 
 let httpServerCreation = new Promise( (resolve, reject) => {
 	httpServer.listen(cfg.httpPort, () => {
-		console.log(`HTTP server listenin on port ${cfg.httpPort}`)
+		log(`HTTP server listenin on port ${cfg.httpPort}`)
 		resolve(httpServer)
 	})
 })
@@ -47,6 +47,7 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 		'controller',
 		`module.exports = (req, res) => res.send('ThisIsATest')`
 	)
+	spawnControllers.catch(err => log(chalk.red(`[init.js] Lacking controllers creation failed ${err}`)))
 	return spawnControllers.then( () => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
@@ -64,7 +65,6 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 			resolve()
 		})
 	})
-	spawnControllers.catch(err => log(chalk.red(`[init.js] Lacking controllers creation failed ${err}`)))
 })
 
 /*
