@@ -20,7 +20,7 @@ const chalk = require('chalk')
 module.exports = {
 	activeSessions: new Map(),
 	salt: bcrypt.genSaltSync(cfg.saltStrength),
-	createSession(username, password, userId) {
+	createSession(username, userId) {
 		return new Promise( (resolve, reject) => {
 			const token = bcrypt.hash(
 				new ObjectId().str,
@@ -45,7 +45,7 @@ module.exports = {
 			}
 		)
 	},
-	getSessionByToken(token) {
+	get(token) {
 		if (this.stillExists(token)) return this.activeSessions.get(token)
 		return false
 	},

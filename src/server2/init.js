@@ -25,6 +25,7 @@ let dbConnection = new Promise( (resolve, reject) => {
 
 
 let httpServerCreation = new Promise( (resolve, reject) => {
+	//TODO reject
 	httpServer.listen(cfg.httpPort, () => {
 		log(`HTTP server listenin on port ${cfg.httpPort}`)
 		resolve(httpServer)
