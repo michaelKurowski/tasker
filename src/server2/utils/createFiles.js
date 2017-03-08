@@ -16,6 +16,7 @@ module.exports = (
 	defaultContent
 	) => {
 	let filesCreationPromises = []
+	if ( !fs.existsSync(destinationPath) ) fs.mkdirSync(destinationPath);
 	listOfObjects.forEach( (element, index) => {
 		let outputPath = `${destinationPath}/${element[fileNameProperty]}.js`
 		if ( !fs.existsSync(outputPath) ) {
