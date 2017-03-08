@@ -38,9 +38,9 @@ httpServerCreation.catch( err =>
 /*
 Assigns routes from ./routes.json to express http Server and
 assigns controllers to them.
-TODO Middleware (policies and sessions)
+TODO sessions
 */
-let assigningRoutes = httpServerCreation.then( httpServer => {
+let creatingRoutes = httpServerCreation.then( httpServer => {
 	//Creating controller files
 	let spawnFiles = Promise.all([
 		createFiles(
@@ -53,32 +53,29 @@ let assigningRoutes = httpServerCreation.then( httpServer => {
 			policies,
 			'./policies',
 			'fileName',
-			`module.exports = (req, res) => res.send('ThisIsATest')`
+			`module.exports = (req, res, next) => next()`
 		)
 	])
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
-
 	return spawnFiles.then( () => {
-		log('All controllers exist')
-		return new Promise( (resolve, reject) => {
-			routes.forEach( element =>
-				//TODO make initialization wait until all routes will be set
-				httpServer.get(
-					element.route,
-					require(`./controllers/${element.controller}.js`),
-					err => {
-						log(chalk.red(err))
-						reject(err)
-					}
-				)
+		log('All files created')
+		routes.map( route => {
+			let matchedPolicy = policies.find(policy => policy.name === route.policy)
+			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
+			return httpServer.get(route.path,
+				//Middleware routing
+				require(`./policies/${matchedPolicy.fileName}.js`),
+				require(`./controllers/${route.controller}.js`)
 			)
-			resolve()
 		})
+		return Promise.resolve()
 	})
+
+
 })
 
 /*
 Passes promises of each of enlisted actions.
 index.js will wait for them to be fullfiled.
 */
-module.exports = Promise.all([dbConnection, httpServerCreation, assigningRoutes])
+module.exports = Promise.all([dbConnection, httpServerCreation, creatingRoutes])
