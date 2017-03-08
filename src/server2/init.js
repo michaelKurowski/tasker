@@ -3,7 +3,7 @@ const cfg = require('./config.json')
 const routes = require('./routes.json')
 const policies = require('./policies.json')
 const MongoClient = require('mongodb').MongoClient
-
+const sessionRegister = require('./sessionRegister.js')
 const assert = require('assert')
 const express = require('express')
 
@@ -64,6 +64,7 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
 			return httpServer.get(route.path,
 				//Middleware routing
+				sessionRegister,
 				require(`./policies/${matchedPolicy.fileName}.js`),
 				require(`./controllers/${route.controller}.js`)
 			)
