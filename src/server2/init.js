@@ -36,12 +36,12 @@ httpServerCreation.catch( err =>
 )
 
 /*
-Assigns routes from ./routes.json to express http Server and
-assigns controllers to them.
+Loads controllers and policies
+Creates routes according to specs
 TODO sessions
 */
 let creatingRoutes = httpServerCreation.then( httpServer => {
-	//Creating controller files
+	//Ensuring that controller and policies files exist
 	let spawnFiles = Promise.all([
 		createFiles(
 			routes,
