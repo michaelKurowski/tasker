@@ -38,7 +38,6 @@ httpServerCreation.catch( err =>
 /*
 Loads controllers and policies
 Creates routes according to specs
-TODO sessions
 */
 let creatingRoutes = httpServerCreation.then( httpServer => {
 	//Ensuring that controller and policies files exist

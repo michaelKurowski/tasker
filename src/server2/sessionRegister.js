@@ -5,5 +5,6 @@ It handles sessions.
 let sessions = require('./sessionsManager.js')
 
 module.exports = (req, res, next) => {
+	//TODO sessions and token handling
 	next()
 }
