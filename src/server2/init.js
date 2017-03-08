@@ -1,7 +1,7 @@
-const createFilesFromConfig = require('./utils/createFiles.js')
+const createFiles = require('./utils/createFiles.js')
 const cfg = require('./config.json')
 const routes = require('./routes.json')
-
+const policies = require('./policies.json')
 const MongoClient = require('mongodb').MongoClient
 
 const assert = require('assert')
@@ -42,14 +42,23 @@ TODO Middleware (policies and sessions)
 */
 let assigningRoutes = httpServerCreation.then( httpServer => {
 	//Creating controller files
-	let spawnControllers = createFilesFromConfig(
-		routes,
-		'./controllers',
-		'controller',
-		`module.exports = (req, res) => res.send('ThisIsATest')`
-	)
-	spawnControllers.catch(err => log(chalk.red(`[init.js] Lacking controllers creation failed ${err}`)))
-	return spawnControllers.then( () => {
+	let spawnFiles = Promise.all([
+		createFiles(
+			routes,
+			'./controllers',
+			'controller',
+			`module.exports = (req, res) => res.send('ThisIsATest')`
+		),
+		createFiles(
+			policies,
+			'./policies',
+			'fileName',
+			`module.exports = (req, res) => res.send('ThisIsATest')`
+		)
+	])
+	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
+
+	return spawnFiles.then( () => {
 		log('All controllers exist')
 		return new Promise( (resolve, reject) => {
 			routes.forEach( element =>
