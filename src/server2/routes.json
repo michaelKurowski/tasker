@@ -1,6 +1,6 @@
 [
 	{
-		"path" : "/client",
+		"path" : "/client/*",
 		"controller" : "sendClient",
 		"policy" : "*",
 		"requestType": "get"

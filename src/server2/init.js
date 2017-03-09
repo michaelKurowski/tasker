@@ -59,7 +59,7 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
 	return spawnFiles.then( () => {
 		log('All files created')
-		routes.map( route => {
+		routes.forEach( route => {
 			let matchedPolicy = policies.find(policy => policy.name === route.policy)
 			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
 			return httpServer[route.requestType](route.path,
