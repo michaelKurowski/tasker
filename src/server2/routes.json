@@ -6,6 +6,12 @@
 		"requestType": "get"
 	},
 	{
+		"path" : "/communicationProtocol",
+		"controller" : "sendCommunicationProtocol",
+		"policy" : "*",
+		"requestType": "get"
+	},
+	{
 		"path" : "/signUp",
 		"controller" : "signUp",
 		"policy" : "*",
