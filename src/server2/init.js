@@ -62,7 +62,7 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 		routes.map( route => {
 			let matchedPolicy = policies.find(policy => policy.name === route.policy)
 			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
-			return httpServer.post(route.path,
+			return httpServer[route.requestType](route.path,
 				//Middleware routing
 				requestVerifier,
 				bodyParser.json(),

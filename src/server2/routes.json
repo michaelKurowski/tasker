@@ -1,79 +1,94 @@
 [
 	{
-		"path" : "/",
+		"path" : "/client",
 		"controller" : "sendClient",
-		"policy" : "*"
+		"policy" : "*",
+		"requestType": "get"
 	},
 	{
 		"path" : "/signUp",
 		"controller" : "signUp",
-		"policy" : "*"
+		"policy" : "*",
+		"requestType": "post"
 	},
 	{
 		"path" : "/logIn",
 		"controller" : "logIn",
-		"policy" : "*"
+		"policy" : "*",
+		"requestType": "post"
 	},
 	{
 		"path" : "/user/create",
 		"controller" : "userCreate",
-		"policy" : "administrator"
+		"policy" : "administrator",
+		"requestType": "post"
 	},
 	{
 		"path" : "/user/edit",
 		"controller" : "userEdit",
-		"policy" : "administrator"
+		"policy" : "administrator",
+		"requestType": "post"
 	},
 	{
 		"path" : "/user/remove",
 		"controller" : "userRemove",
-		"policy" : "administrator"
+		"policy" : "administrator",
+		"requestType": "post"
 	},
 	{
 		"path" : "/user/read",
 		"controller" : "userRead",
-		"policy" : "administrator"
+		"policy" : "administrator",
+		"requestType": "post"
 	},
 
 	{
 		"path" : "/task/create",
 		"controller" : "taskCreate",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/task/edit",
 		"controller" : "taskEdit",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/task/remove",
 		"controller" : "taskRemove",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/task/read",
 		"controller" : "taskRead",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 
 	{
 		"path" : "/historyLog/create",
 		"controller" : "historyLogCreate",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/historyLog/edit",
 		"controller" : "historyLogEdit",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/historyLog/remove",
 		"controller" : "historyLogRemove",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	},
 	{
 		"path" : "/historyLog/read",
 		"controller" : "historyLogRead",
-		"policy" : "loggedIn"
+		"policy" : "loggedIn",
+		"requestType": "post"
 	}
 ]
