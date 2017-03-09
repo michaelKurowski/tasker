@@ -42,24 +42,24 @@ httpServerCreation.catch( err =>
 	log(chalk.red('[init.js] Creation of http server unsuccessful.', err))
 )
 let initiatingModels = dbConnection.then( db => {
+
 	let spawnFiles = createFiles(
 		dbFieldTypes,
 		'./dbFieldTypes',
 		'name',
 		`module.exports = {
 			validation(value) {
-				return value
+				return true
 			},
 			preparation(value) {
-
+				return value
 			}
 		}`
-	).then( () => {
-		//TODO DB initialization
+	)
+	return spawnFiles.then( () => {
+		return Promise.resolve()
 	})
-
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
-
 })
 /*
 Loads controllers and policies
@@ -108,4 +108,4 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 Passes promises of each of enlisted actions.
 index.js will wait for them to be fullfiled.
 */
-module.exports = Promise.all([dbConnection, httpServerCreation, creatingRoutes])
+module.exports = Promise.all([dbConnection, httpServerCreation, creatingRoutes, initiatingModels])

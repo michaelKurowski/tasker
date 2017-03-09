@@ -16,7 +16,7 @@
 				"name": "creationDate",
 				"type": "timestamp",
 				"default": "0"
-			},
+			}
 		]
 	}
 ]
