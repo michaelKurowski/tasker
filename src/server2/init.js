@@ -1,7 +1,13 @@
 const createFiles = require('./utils/createFiles.js')
+
+
+//Configs
 const cfg = require('./config.json')
 const routes = require('./routes.json')
 const policies = require('./policies.json')
+const models = require('./models.json')
+const dbFieldTypes = require('./dbFieldTypes.json')
+
 const MongoClient = require('mongodb').MongoClient
 const sessionRegister = require('./sessionRegister.js')
 const assert = require('assert')
@@ -35,11 +41,32 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 httpServerCreation.catch( err =>
 	log(chalk.red('[init.js] Creation of http server unsuccessful.', err))
 )
+let initiatingModels = dbConnection.then( db => {
+	let spawnFiles = createFiles(
+		dbFieldTypes,
+		'./dbFieldTypes',
+		'name',
+		`module.exports = {
+			validation(value) {
+				return value
+			},
+			preparation(value) {
 
+			}
+		}`
+	).then( () => {
+		//TODO DB initialization
+	})
+
+	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
+
+})
 /*
 Loads controllers and policies
 Creates routes according to specs
 */
+
+
 let creatingRoutes = httpServerCreation.then( httpServer => {
 	//Ensuring that controller and policies files exist
 	let spawnFiles = Promise.all([

@@ -1,0 +1,22 @@
+[
+	{
+		"name": "user",
+		"fields": [
+			{
+				"name": "username",
+				"type": "string",
+				"default": "noName"
+			},
+			{
+				"name": "password",
+				"type": "password",
+				"default": "noName"
+			},
+			{
+				"name": "creationDate",
+				"type": "timestamp",
+				"default": "0"
+			},
+		]
+	}
+]
