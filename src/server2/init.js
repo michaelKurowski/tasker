@@ -65,7 +65,7 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 			return httpServer.post(route.path,
 				//Middleware routing
 				requestVerifier,
-				bodyParser.json({type: 'text/plain'}),
+				bodyParser.json(),
 				sessionRegister,
 				require(`./policies/${matchedPolicy.fileName}.js`),
 				require(`./controllers/${route.controller}.js`)
