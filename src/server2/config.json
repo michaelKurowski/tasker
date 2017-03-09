@@ -6,7 +6,7 @@
 		"developerInstance": [
 			{
 				"header": "Access-Control-Allow-Origin",
-				"value": "null"
+				"value": "http://localhost:8000"
 			},
 			{
 				"header": "Access-Control-Allow-Headers",
@@ -16,7 +16,7 @@
 		"productionInstance": [
 			{
 				"header": "Access-Control-Allow-Origin",
-				"value": "localhost"
+				"value": "http://localhost:8000"
 			}
 		]
 	},

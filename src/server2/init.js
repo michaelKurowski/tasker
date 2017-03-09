@@ -6,7 +6,8 @@ const MongoClient = require('mongodb').MongoClient
 const sessionRegister = require('./sessionRegister.js')
 const assert = require('assert')
 const express = require('express')
-
+const bodyParser = require('body-parser')
+const requestVerifier = require('./requestVerifier.js')
 const chalk = require('chalk')
 const log = console.log
 
@@ -61,8 +62,10 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 		routes.map( route => {
 			let matchedPolicy = policies.find(policy => policy.name === route.policy)
 			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
-			return httpServer.get(route.path,
+			return httpServer.post(route.path,
 				//Middleware routing
+				requestVerifier,
+				bodyParser.json({type: 'text/plain'}),
 				sessionRegister,
 				require(`./policies/${matchedPolicy.fileName}.js`),
 				require(`./controllers/${route.controller}.js`)

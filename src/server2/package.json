@@ -14,12 +14,13 @@
   "author": "Michael Kurowski",
   "license": "ISC",
   "devDependencies": {
+    "cors": "^2.8.1",
     "eslint": "^3.16.1",
     "mocha": "^3.2.0"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
-    "body-parser": "^1.16.1",
+    "body-parser": "^1.17.1",
     "chalk": "^1.1.3",
     "express": "^4.14.1",
     "mongodb": "^2.2.24"
