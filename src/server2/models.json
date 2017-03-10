@@ -1,21 +1,25 @@
 [
 	{
-		"name": "user",
+		"name": "users",
 		"fields": [
 			{
 				"name": "username",
 				"type": "string",
-				"default": "noName"
+				"default": "noName",
+				"unique": true,
+				"required": true
 			},
 			{
 				"name": "password",
 				"type": "password",
-				"default": "noName"
+				"default": "noName",
+				"required": true
 			},
 			{
 				"name": "creationDate",
 				"type": "timestamp",
-				"default": "0"
+				"default": 0,
+				"required": true
 			}
 		]
 	}
