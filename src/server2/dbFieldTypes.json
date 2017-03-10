@@ -3,5 +3,6 @@
 	{"name": "int"},
 	{"name": "date"},
 	{"name": "email"},
-	{"name": "password"}
+	{"name": "password"},
+	{"name": "timestamp"}
 ]
