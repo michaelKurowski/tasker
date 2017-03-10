@@ -8,5 +8,5 @@ init.then( values => {
 	log( chalk.green('Initialization completed. Tasker server is running') )
 })
 init.catch( err => {
-	log(chalk.red('[index.js] Server initialization unsuccessful.', err))
+	log(chalk.red('[index.js] Tasker server initialization unsuccessful.', err))
 })
