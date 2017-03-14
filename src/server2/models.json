@@ -1,26 +1,53 @@
 [
 	{
 		"name": "users",
-		"fields": [
-			{
-				"name": "username",
-				"type": "string",
-				"default": "noName",
-				"unique": true,
-				"required": true
-			},
-			{
-				"name": "password",
-				"type": "password",
-				"default": "noName",
-				"required": true
-			},
-			{
-				"name": "creationDate",
-				"type": "timestamp",
-				"default": 0,
-				"required": true
-			}
-		]
+		"validator" : {
+			"$and" : [
+				{ "username":
+					{ "$type": "string" }
+				},
+				{ "phone":
+					{ "$type": "string" }
+				},
+				{ "email":
+					{
+						"$regex": "/^(([^<>()\\[\\]\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/",
+						"$type": "string"
+					}
+				}
+			]
+		}
+	},
+	{
+		"name": "tasks",
+		"validator" : {
+			"$and" : [
+				{ "title":
+					{ "$type": "string" }
+				},
+				{ "deadline":
+					{ "$type": "string" }
+				},
+				{ "creationDate":
+					{ "$type": "date" }
+				}
+			]
+		}
+	}
+	{
+		"name": "historyLogs",
+		"validator" : {
+			"$and" : [
+				{ "title":
+					{ "$type": "string" }
+				},
+				{ "deadline":
+					{ "$type": "string" }
+				},
+				{ "creationDate":
+					{ "$type": "date" }
+				}
+			]
+		}
 	}
 ]
