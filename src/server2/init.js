@@ -45,111 +45,12 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 	})
 })
 httpServerCreation.catch( err => log(chalk.red('[init.js] Creation of http server unsuccessful.', err)))
-/* TODO initializing models
+
 let initiatingModels = dbConnection.then( db => {
-
-	let spawnFiles = createFiles(
-		dbFieldTypes,
-		'./dbFieldTypes',
-		'name',
-		`module.exports = {
-			validation(value) {
-				return true
-			},
-			preparation(value) {
-				return value
-			}
-		}`
-	)
-	return spawnFiles.then( () => {
-		//
-		//////////////COMPARING MODELS TO COLLECTIONS//////////////
-
-		//Creating lists of models and collections
-		let modelsList = models.map((model, index) => {
-			return {name: model.name, id: index}
-		})
-		let collections = []
-		let listingCollections = new Promise( (resolve, reject) => {
-			 db.listCollections().each((err, collection) => {
-				if (err) return reject()
-				if (collection === null) return resolve()
-				collections.push(collection)
-			})
-		})
-		listingCollections.catch( err => log(chalk.red(`[init.js] Error during listing collections that match to models ${err}`)))
-
-		listingCollections.then( () => {
-
-			modelsList.map( model => {
-				let matchedCollection = collections.find(coll => coll.name === model.name)
-				if (matchedCollection !== undefined) {
-					log(matchedCollection.options.validator.$or)
-					//Creating validator based on model
-					let matchedCollectionValidator = matchedCollection.options.validator.$and
-					let modelValidator = {
-						$and: []
-					}
-					//creating validator
-					modelValidator.$and = model.fields.map( field => {
-						let fieldValidator = {}
-
-					})
-					/*
-					let modelValidator = {
-						$and: model.
-					}
-
-					assert.deepEqual(
-						matchedCollection.options.validator,
-						expected,
-						[message]
-					)
-					*/
-				} else {
-					log(`[init.js] No '${model.name}' collection found. Creating...`)
-				}
-			})
-		})
-
-
-		/*
-		db.listCollections().forEach(
-			el => log(el)
-		)
-		*/
-		//Initiating db
-		/*
-		return Promise.all([
-			db.createCollection('users', {
-				validator: {
-					$or: [
-						{ username: { $exists: false } },
-						{ email: { $regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ } }
-					]
-				}
-			}),
-			db.createCollection('tasks', {
-				validator: {
-					$or: [
-						{ title: { $type: 'string' } }
-					]
-				}
-			}),
-			db.createCollection('historyLogs', {
-				validator: {
-					$or: [
-						{ title: { $type: 'string' } }
-					]
-				}
-			})
-		])
-		*/
-	})
-	return Promise.resolve()
+	
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
 })
-*/
+
 /*
 Loads controllers and policies
 Creates routes

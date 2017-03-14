@@ -1,8 +1,0 @@
-[
-	{"name": "string"},
-	{"name": "int"},
-	{"name": "date"},
-	{"name": "email"},
-	{"name": "password"},
-	{"name": "timestamp"}
-]
