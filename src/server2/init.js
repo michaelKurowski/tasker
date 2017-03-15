@@ -176,6 +176,8 @@ let initiatingModels = dbConnection.then( db => {
 						break
 					case '3':
 						//TODO
+						log(chalk.red(`[init.js] A server has been stopped by user`))
+						Promise.reject(`[init.js] A server has been stopped by user`)
 						break
 					default:
 
