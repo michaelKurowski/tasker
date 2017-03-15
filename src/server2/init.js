@@ -6,7 +6,6 @@ const cfg = require('./config.json')
 const routes = require('./routes.json')
 const policies = require('./policies.json')
 const models = require('./models.json')
-const dbFieldTypes = require('./dbFieldTypes.json')
 
 const MongoClient = require('mongodb').MongoClient
 const sessionRegister = require('./sessionRegister.js')
@@ -15,7 +14,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const requestVerifier = require('./requestVerifier.js')
 const chalk = require('chalk')
+const readline = require('readline')
 const log = console.log
+
+const readln = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
 let httpServer = express()
 /*
@@ -47,8 +52,73 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 httpServerCreation.catch( err => log(chalk.red('[init.js] Creation of http server unsuccessful.', err)))
 
 let initiatingModels = dbConnection.then( db => {
-	
+/*
+	let spawnFiles =
+		createFiles(
+			models,
+			'./models',
+			'name',
+			`module.exports = {prepare: () => {}}`
+		)
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
+
+	//Enlisting existing collections
+	let enlistCollections = spawnFiles.then( () => new Promise ( (resolve, reject) => {
+			let collections = []
+			db.listCollections().each( (err, collection) => {
+				if (err) {
+					console.log(chalk.red('[init.js] initiation of models: failed to enlist collections.'))
+					reject(err)
+				}
+				if (collection === null) {
+					resolve(collections)
+				} else {
+
+					collections.push(collection)
+
+				}
+			})
+		})
+	)
+
+	enlistCollections.catch(err => log(chalk.red(`[init.js] Collection enlisting failed ${err}`)))
+	//Comparing existing collections to models
+	enlistCollections.then( collections => new Promise ( (resolve, reject) =>
+		//Iterate through each model and find fitting collection by name
+		models.forEach( model => {
+			collections.forEach( collection => {
+				if (model.name === collection.name) {
+					//Compare validators
+					try {
+						assert.deepEqual(model.validator, collection.options.validator)
+					} catch (assertionError) {
+						console.log(chalk.red(`[init.js] Model and collection validators of "${model.name}" are not the same`))
+						console.log(chalk.red(`Drop existing collection or change validator\n\n\n`))
+						let actionQuestion = () => readln.question('Do you want to: 1) Drop the collection and create from scratch. 2) Change collection\'s validator. 3) Abort',
+							answer => {
+								switch (answer) {
+									case '1':
+
+									case '2':
+
+									case '3':
+										reject('[init.js] Server startup aborted by user')
+										break
+									default:
+										actionQuestion()
+										return true
+								}
+								readln.close()
+							}
+						)
+						actionQuestion()
+					}
+				}
+			})
+		})
+	))
+	*/
+	return Promise.resolve()
 })
 
 /*

@@ -33,7 +33,7 @@
 				}
 			]
 		}
-	}
+	},
 	{
 		"name": "historyLogs",
 		"validator" : {
