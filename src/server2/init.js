@@ -1,5 +1,5 @@
 const createFiles = require('./utils/createFiles.js')
-
+const clnAssert = require('./utils/cleanAssert.js')
 
 //Configs
 const cfg = require('./config.json')
@@ -9,13 +9,14 @@ const models = require('./models.json')
 
 const MongoClient = require('mongodb').MongoClient
 const sessionRegister = require('./sessionRegister.js')
-const assert = require('assert')
 const express = require('express')
 const bodyParser = require('body-parser')
 const requestVerifier = require('./requestVerifier.js')
 const chalk = require('chalk')
 const readline = require('readline')
+const prompt = require('prompt-sync')()
 const log = console.log
+
 
 const readln = readline.createInterface({
   input: process.stdin,
@@ -52,7 +53,7 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 httpServerCreation.catch( err => log(chalk.red('[init.js] Creation of http server unsuccessful.', err)))
 
 let initiatingModels = dbConnection.then( db => {
-/*
+
 	let spawnFiles =
 		createFiles(
 			models,
@@ -67,7 +68,7 @@ let initiatingModels = dbConnection.then( db => {
 			let collections = []
 			db.listCollections().each( (err, collection) => {
 				if (err) {
-					console.log(chalk.red('[init.js] initiation of models: failed to enlist collections.'))
+					log(chalk.red('[init.js] initiation of models: failed to enlist collections.'))
 					reject(err)
 				}
 				if (collection === null) {
@@ -80,44 +81,102 @@ let initiatingModels = dbConnection.then( db => {
 			})
 		})
 	)
-
+	//TODO refactor
 	enlistCollections.catch(err => log(chalk.red(`[init.js] Collection enlisting failed ${err}`)))
+
 	//Comparing existing collections to models
-	enlistCollections.then( collections => new Promise ( (resolve, reject) =>
+	let findingIncorrectCollections = enlistCollections.then( collections => new Promise ( (resolve, reject) => {
 		//Iterate through each model and find fitting collection by name
-		models.forEach( model => {
-			collections.forEach( collection => {
-				if (model.name === collection.name) {
-					//Compare validators
-					try {
-						assert.deepEqual(model.validator, collection.options.validator)
-					} catch (assertionError) {
-						console.log(chalk.red(`[init.js] Model and collection validators of "${model.name}" are not the same`))
-						console.log(chalk.red(`Drop existing collection or change validator\n\n\n`))
-						let actionQuestion = () => readln.question('Do you want to: 1) Drop the collection and create from scratch. 2) Change collection\'s validator. 3) Abort',
-							answer => {
-								switch (answer) {
-									case '1':
-
-									case '2':
-
-									case '3':
-										reject('[init.js] Server startup aborted by user')
-										break
-									default:
-										actionQuestion()
-										return true
+		let incompatiblePairs = []
+		let creatingCollections = []
+			models.forEach( model => {
+				let collectionExists = false
+				collections.forEach( collection => {
+					//console.log(model.name, collection.name)
+					if (model.name === collection.name) {
+						//Compare validators
+						collectionExists = true
+						log(`[init.js] "${model.name}" collection exists. Checking correctnss...`)
+						if (!clnAssert.deepEqual(model.validator, collection.options.validator)) {
+							//console.log('incompatible')
+							incompatiblePairs.push({model, collection})
+						}
+					}
+				})
+				if (!collectionExists) {
+					log(`[init.js] "${model.name}" collection doesn't exists. Creating...`)
+					creatingCollections.push( new Promise ((resolve, reject) =>
+						db.createCollection(
+							model.name,
+							{validator: model.validator},
+							err => {
+								if (err) {
+									reject(err)
+								} else {
+									log(`[init.js] "${model.name}" collection created...`)
+									resolve()
 								}
-								readln.close()
+
 							}
 						)
-						actionQuestion()
-					}
+					))
 				}
 			})
+			if (creatingCollections.length === 0 ) return resolve(incompatiblePairs)
+			return Promise.all(creatingCollections)
 		})
-	))
-	*/
+	)
+	findingIncorrectCollections.catch(err => log(chalk.red(`[init.js] Incorrect collections enlisting failed ${err}`)))
+
+	//Fixing mismatches between models and collections
+	return findingIncorrectCollections.then( incompatiblePairs => new Promise( (resolve, reject) => {
+
+			if (incompatiblePairs.length === 0) return resolve()
+			let fixingMismatches = []
+			let resolvingFixingMismatches = []
+
+			for (let i = 0; i < incompatiblePairs.length; i++) {
+				fixingMismatches.push(new Promise( (resolve, reject) => resolvingFixingMismatches.push({resolve, reject}) ))
+			}
+			log(fixingMismatches)
+			incompatiblePairs.forEach( (pair, index) => {
+				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Change validator of the current collection - WIP.\n 3) Abort - WIP\n\n `)
+				log(`You've choosed ${userDecission}.\n`)
+				switch (userDecission) {
+					case '1':
+						let dropCollection = new Promise( (resolve, reject) =>
+							db.collection(pair.model.name).drop(() => {
+								console.log(`"${pair.model.name}" collection dropped`)
+								return resolve()
+							})
+						)
+						//dropCollection.catch(chalk.red(`[init.js] Failed to drop "${pair.model.name}" collection.\n${err}`))
+						return dropCollection.then( () => new Promise ((resolve, reject) =>
+							db.createCollection(
+								pair.model.name,
+								{validator: pair.model.validator},
+								err => {
+									if (err) return resolvingFixingMismatches[index].reject(err)
+									console.log(`"${pair.model.name}" collection recreated`)
+									resolvingFixingMismatches[index].resolve()
+								}
+							)
+						))
+						break
+					case '2':
+						//TODO
+						break
+					case '3':
+						//TODO
+						break
+					default:
+
+				}
+			})
+
+		})
+	)
+
 	return Promise.resolve()
 })
 
@@ -143,7 +202,6 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 	])
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
 	return spawnFiles.then( () => {
-		log('All files created')
 		routes.forEach( route => {
 			let matchedPolicy = policies.find(policy => policy.name === route.policy)
 			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
@@ -166,4 +224,4 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 Passes promises of each of enlisted actions.
 index.js will wait for them to be fullfiled.
 */
-module.exports = Promise.all([dbConnection, httpServerCreation, creatingRoutes])
+module.exports = Promise.all([dbConnection, httpServerCreation, creatingRoutes, initiatingModels])
