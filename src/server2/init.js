@@ -172,10 +172,10 @@ let initiatingModels = dbConnection.then( db => {
 						))
 						break
 					case '2':
-						//TODO
+						//TODO changing validator of existing collection and validating whole collection
 						break
 					case '3':
-						//TODO
+						//TODO finish
 						log(chalk.red(`[init.js] A server has been stopped by user`))
 						Promise.reject(`[init.js] A server has been stopped by user`)
 						break
