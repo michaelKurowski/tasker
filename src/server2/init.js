@@ -52,6 +52,13 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 })
 httpServerCreation.catch( err => log(chalk.red('[init.js] Creation of http server unsuccessful.', err)))
 
+/*
+	INITIATING MODELS
+	Creating models files -> Creating lacking collections for models ->
+	checking if existing collections are consistent with models ->
+	solving eventual inconsistency.
+*/
+
 let initiatingModels = dbConnection.then( db => {
 
 	let spawnFiles =
@@ -140,6 +147,7 @@ let initiatingModels = dbConnection.then( db => {
 			}
 			log(fixingMismatches)
 			incompatiblePairs.forEach( (pair, index) => {
+				//TODO fix prompt issue
 				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Change validator of the current collection - WIP.\n 3) Abort - WIP\n\n `)
 				log(`You've choosed ${userDecission}.\n`)
 				switch (userDecission) {
