@@ -1,5 +1,5 @@
 # About
-This application is Module-Controller based RESTful server, which serves the function of tasker backend.
+This application is Model-Controller based RESTful server, which serves the function of tasker backend.
 
 
 # Routing
