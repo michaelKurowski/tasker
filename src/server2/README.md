@@ -1,7 +1,6 @@
 # About
 This application is Model-Controller based RESTful server, which serves the function of tasker backend.
-
-
+The philosophy here is to make is as much declarative as possible to ease itial learning curve, so most of things are stored as JSON files that can be edited by developer.
 # Routing
 HTTP request -> requestVerifier.js -> bodyParser (JSON) -> sessionRegister.js -> policy -> controller
 
@@ -24,11 +23,8 @@ or blocked.
 
 If request is successfully verified by policy, it's then being passed to
 appropiate controller specified in routes.json which takes care of the request.
-
-
-
-# DB models
-
+# DB models (WIP, Mostly done)
+Models are defined in models.json, where administrator can specify various models and validators for them. 
+Tasker server requires MongoDB to run.
 # Sessions handling
-
 # Initialization
