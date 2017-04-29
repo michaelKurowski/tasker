@@ -103,7 +103,7 @@ let initiatingModels = dbConnection.then( db => {
 					if (model.name === collection.name) {
 						//Compare validators
 						collectionExists = true
-						log(`[init.js] "${model.name}" collection exists. Checking correctnss...`)
+						log(`[init.js] "${model.name}" collection exists. Checking correctness...`)
 						if (!clnAssert.deepEqual(model.validator, collection.options.validator)) {
 							//console.log('incompatible')
 							incompatiblePairs.push({model, collection})
@@ -148,7 +148,7 @@ let initiatingModels = dbConnection.then( db => {
 			log(fixingMismatches)
 			incompatiblePairs.forEach( (pair, index) => {
 				//TODO fix prompt issue
-				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Change validator of the current collection - WIP.\n 3) Abort - WIP\n\n `)
+				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Migrate to new collection. - WIP.\n 3) Abort - WIP\n\n `)
 				log(`You've choosed ${userDecission}.\n`)
 				switch (userDecission) {
 					case '1':
@@ -172,7 +172,38 @@ let initiatingModels = dbConnection.then( db => {
 						))
 						break
 					case '2':
-						//TODO changing validator of existing collection and validating whole collection
+
+						let createCollection = new Promise ( (resolve, reject) => {
+							db.createCollection(
+								pair.model.name + '_clone',
+								{validator: pair.model.validator},
+								err => {
+									if (err) return reject(err)
+									log(`Collection "${pair.model.name}" has been cloned.`)
+									resolve()
+								}
+							)
+						})
+						createCollection.catch( err => log(chalk.red(`[init.js] Failed to create "${pair.model.name}_clone" collection.\n${err}`)))
+						let cloningDocuments = createCollection.then( () => new Promise ((resolve, reject) => {
+							//TODO
+							let loadingDocuments = new Promise ( (resolve, reject) => {
+								let convertingToArray = db.collection(pair.model.name).find().toArray()
+								convertingToArray.then( documents => resolve(documents))
+								convertingToArray.catch( err => {
+									db.collection(pair.model.name + '_clone').drop()
+									reject(err)
+								})
+							})
+							loadingDocuments.catch(err => log(chalk.red(`[init.js] Failed to load "${pair.model.name}" collection documents.\n${err}`)))
+							loadingDocuments.then( documents => {
+								db.collection(pair.model.name + '_clone').insertMany(documents)
+							})
+
+
+						}))
+
+
 						break
 					case '3':
 						//TODO finish
