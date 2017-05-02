@@ -1,5 +1,5 @@
 # About
-This application is Model-Controller based RESTful server, which serves the function of tasker backend.
+This application is Model-Controller based Web server, which serves the function of tasker backend.
 The philosophy here is to make is as much declarative as possible to ease itial learning curve, so most of things are stored as JSON files that can be edited by developer.
 # Routing
 HTTP request -> requestVerifier.js -> bodyParser (JSON) -> sessionRegister.js -> policy -> controller
