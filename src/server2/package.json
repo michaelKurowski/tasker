@@ -4,7 +4,7 @@
   "description": "Server for tasker app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha .",
+    "test": "mocha ./test/controllers/",
     "eslint": "eslint ."
   },
   "keywords": [
@@ -16,7 +16,9 @@
   "devDependencies": {
     "cors": "^2.8.1",
     "eslint": "^3.16.1",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "should": "^11.2.1",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",

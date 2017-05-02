@@ -1,5 +1,6 @@
 {
 	"httpPort": 8000,
+	"address": "http://localhost",
 	"mongoDbUrl": "mongodb://127.0.0.1:27017/tasker",
 	"devInstance": true,
 	"httpServerResponsesHeader": {

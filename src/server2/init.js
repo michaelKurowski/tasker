@@ -16,6 +16,7 @@ const chalk = require('chalk')
 const readline = require('readline')
 const prompt = require('prompt-sync')()
 const log = console.log
+const fs = require('fs')
 
 
 const readln = readline.createInterface({
@@ -232,13 +233,19 @@ let creatingRoutes = httpServerCreation.then( httpServer => {
 			routes,
 			'./controllers',
 			'controller',
-			`module.exports = (req, res) => res.send('ThisIsATest')`
+			fs.readFileSync('./templates/controller.js')
+		),
+		createFiles(
+			routes,
+			'./test/controllers',
+			'controller',
+			fs.readFileSync('./templates/controllerTest.js')
 		),
 		createFiles(
 			policies,
 			'./policies',
 			'fileName',
-			`module.exports = (req, res, next) => next()`
+			fs.readFileSync('./templates/policy.js')
 		)
 	])
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
