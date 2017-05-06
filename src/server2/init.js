@@ -49,7 +49,7 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 				cfg.httpPort < 65535 &&
 			 		cfg.httpPort > 0) return reject('Port defined in config.json is not valid.')
 	httpServer.listen(cfg.httpPort, err => {
-		log(`HTTP server listenin on port ${cfg.httpPort}`)
+		log(`HTTP server listening on port ${cfg.httpPort}`)
 		resolve(httpServer)
 	})
 })
@@ -98,7 +98,7 @@ let initiatingModels = dbConnection.then( db => {
 			log(fixingMismatches)
 			incompatiblePairs.forEach( (pair, index) => {
 				//TODO fix prompt issue
-				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Migrate to new collection. - WIP.\n 3) Abort - WIP\n\n `)
+				let userDecission = prompt(`"${pair.model.name}" validator mismatch between model and collection. Do you want to:\n 1) Drop current collection and create new.\n 2) Migrate to new collection. - WIP.\n 3) Ignore \n4) Abort - WIP\n\n `)
 				log(`You've choosed ${userDecission}.\n`)
 				switch (userDecission) {
 					case '1':
@@ -156,9 +156,15 @@ let initiatingModels = dbConnection.then( db => {
 
 						break
 					case '3':
-						//TODO finish
+						//TODO finish 3) IGNORE
 						log(chalk.red(`[init.js] A server has been stopped by user`))
 						Promise.reject(`[init.js] A server has been stopped by user`)
+						break
+					case '4':
+						//TODO finish 4) Abort
+						log(chalk.red(`[init.js] A server has been stopped by user`))
+						Promise.reject(`[init.js] A server has been stopped by user`)
+						process.exit()
 						break
 					default:
 
