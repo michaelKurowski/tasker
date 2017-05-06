@@ -14,9 +14,13 @@
   "author": "Michael Kurowski",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "cors": "^2.8.1",
     "eslint": "^3.16.1",
+    "gulp": "^3.9.1",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "should": "^11.2.1",
     "supertest": "^3.0.0"
   },
