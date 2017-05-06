@@ -1,22 +1,24 @@
 const createFiles = require('./utils/createFiles.js')
 const clnAssert = require('./utils/cleanAssert.js')
-
+const iFun = require('./utils/initFunctions.js')
 //Configs
 const cfg = require('./config.json')
 const routes = require('./routes.json')
 const policies = require('./policies.json')
 const models = require('./models.json')
 
-const MongoClient = require('mongodb').MongoClient
-const sessionRegister = require('./sessionRegister.js')
-const express = require('express')
-const bodyParser = require('body-parser')
+//routing Middleware
 const requestVerifier = require('./requestVerifier.js')
+const sessionRegister = require('./sessionRegister.js')
+
+const MongoClient = require('mongodb').MongoClient
+const express = require('express')
+const httpServer = express()
+
 const chalk = require('chalk')
 const readline = require('readline')
 const prompt = require('prompt-sync')()
 const log = console.log
-const fs = require('fs')
 
 
 const readln = readline.createInterface({
@@ -24,7 +26,7 @@ const readln = readline.createInterface({
   output: process.stdout
 })
 
-let httpServer = express()
+
 /*
 Each global variable below this line is a promise
 At the very bottom of the file Promise.all() is being exported which waits
@@ -33,7 +35,7 @@ until all these promises will be fullfiled.
 let dbConnection = new Promise( (resolve, reject) => {
 	log('Connecting to MongoDB server...')
 	MongoClient.connect(cfg.mongoDbUrl, (err, db) => {
-		if (err != null) return reject(err)
+		if (err !== null) return reject(err)
 		log(`Connected correctly to MongoDB server: ${cfg.mongoDbUrl}`)
 		resolve(db)
 	})
@@ -43,7 +45,7 @@ dbConnection.catch(err => log(chalk.red('[init.js] Connecting to MongoDB server 
 
 let httpServerCreation = new Promise( (resolve, reject) => {
 	//TODO reject
-	if (!Number.isInteger(cfg.httpPort) &&
+	if (!Number.isSafeInteger(cfg.httpPort) &&
 				cfg.httpPort < 65535 &&
 			 		cfg.httpPort > 0) return reject('Port defined in config.json is not valid.')
 	httpServer.listen(cfg.httpPort, err => {
@@ -54,7 +56,7 @@ let httpServerCreation = new Promise( (resolve, reject) => {
 httpServerCreation.catch( err => log(chalk.red('[init.js] Creation of http server unsuccessful.', err)))
 
 /*
-	INITIATING MODELS
+	INITIALIZING MODELS
 	Creating models files -> Creating lacking collections for models ->
 	checking if existing collections are consistent with models ->
 	solving eventual inconsistency.
@@ -72,67 +74,14 @@ let initiatingModels = dbConnection.then( db => {
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
 
 	//Enlisting existing collections
-	let enlistCollections = spawnFiles.then( () => new Promise ( (resolve, reject) => {
-			let collections = []
-			db.listCollections().each( (err, collection) => {
-				if (err) {
-					log(chalk.red('[init.js] initiation of models: failed to enlist collections.'))
-					reject(err)
-				}
-				if (collection === null) {
-					resolve(collections)
-				} else {
-
-					collections.push(collection)
-
-				}
-			})
-		})
+	let enlistCollections = spawnFiles.then( () =>
+		iFun.mongo.enlistCollections(db)
 	)
 	//TODO refactor
 	enlistCollections.catch(err => log(chalk.red(`[init.js] Collection enlisting failed ${err}`)))
-
 	//Comparing existing collections to models
-	let findingIncorrectCollections = enlistCollections.then( collections => new Promise ( (resolve, reject) => {
-		//Iterate through each model and find fitting collection by name
-		let incompatiblePairs = []
-		let creatingCollections = []
-			models.forEach( model => {
-				let collectionExists = false
-				collections.forEach( collection => {
-					//console.log(model.name, collection.name)
-					if (model.name === collection.name) {
-						//Compare validators
-						collectionExists = true
-						log(`[init.js] "${model.name}" collection exists. Checking correctness...`)
-						if (!clnAssert.deepEqual(model.validator, collection.options.validator)) {
-							//console.log('incompatible')
-							incompatiblePairs.push({model, collection})
-						}
-					}
-				})
-				if (!collectionExists) {
-					log(`[init.js] "${model.name}" collection doesn't exists. Creating...`)
-					creatingCollections.push( new Promise ((resolve, reject) =>
-						db.createCollection(
-							model.name,
-							{validator: model.validator},
-							err => {
-								if (err) {
-									reject(err)
-								} else {
-									log(`[init.js] "${model.name}" collection created...`)
-									resolve()
-								}
-
-							}
-						)
-					))
-				}
-			})
-			if (creatingCollections.length === 0 ) return resolve(incompatiblePairs)
-			return Promise.all(creatingCollections)
-		})
+	let findingIncorrectCollections = enlistCollections.then( collections =>
+		iFun.mongo.findIncorrectCollections(collections, models)
 	)
 	findingIncorrectCollections.catch(err => log(chalk.red(`[init.js] Incorrect collections enlisting failed ${err}`)))
 
@@ -227,45 +176,10 @@ Loads controllers and policies
 Creates routes
 */
 let creatingRoutes = httpServerCreation.then( httpServer => {
-	//Ensuring that controller and policies files exist
-	let spawnFiles = Promise.all([
-		createFiles(
-			routes,
-			'./controllers',
-			'controller',
-			fs.readFileSync('./templates/controller.js')
-		),
-		createFiles(
-			routes,
-			'./test/controllers',
-			'controller',
-			fs.readFileSync('./templates/controllerTest.js')
-		),
-		createFiles(
-			policies,
-			'./policies',
-			'fileName',
-			fs.readFileSync('./templates/policy.js')
-		)
-	])
+	//checks if controllers and policies .js files exist and, if they don't, creates them
+	let spawnFiles = iFun.spawnRoutingFiles(routes, policies)
 	spawnFiles.catch(err => log(chalk.red(`[init.js] Neccessary files creation failed ${err}`)))
-	return spawnFiles.then( () => {
-		routes.forEach( route => {
-			let matchedPolicy = policies.find(policy => policy.name === route.policy)
-			if (!matchedPolicy) Promise.reject(`[init.js] Policy '${route.policy}' assigned to '${route.path}' route, not found.`)
-			return httpServer[route.requestType](route.path,
-				//Middleware routing
-				requestVerifier,
-				bodyParser.json(),
-				sessionRegister,
-				require(`./policies/${matchedPolicy.fileName}.js`),
-				require(`./controllers/${route.controller}.js`)
-			)
-		})
-		return Promise.resolve()
-	})
-
-
+	return spawnFiles.then( iFun.initRoutes(httpServer, routes, policies, requestVerifier, sessionRegister) )
 })
 
 /*
